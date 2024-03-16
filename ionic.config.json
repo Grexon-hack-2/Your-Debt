@@ -1,0 +1,7 @@
+{
+  "name": "Your-Debt",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
