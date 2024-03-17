@@ -1,0 +1,165 @@
+<div class="ion-page">
+  <ion-header [translucent]="true" id="main-content">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>DEUDORES</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <table
+      class="table table-striped"
+      *ngIf="listDebts.length > 0;else withoutProduct"
+    >
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Deuda</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of getPageItems(); track item._id) {
+        <tr
+          button
+          [routerLink]="['/inicio/deudores/detalle', item._id]"
+          routerLinkActive="router-link-active"
+        >
+          <td>{{item.Name}}</td>
+          <td>${{item.Debt}}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    <ng-template #withoutProduct>
+      <div class="contentFlex">
+        <ion-card color="light" class="card-box">
+          <ion-card-header>
+            <ion-card-title>Sin clientes!!</ion-card-title>
+            <ion-card-subtitle>Inicia tu negocio</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content> Agrega tu primer cliente </ion-card-content>
+          <ion-button id="open-modal" expand="block">
+            <ion-icon name="add-outline"></ion-icon>
+            Nuevo deudor
+          </ion-button>
+        </ion-card>
+      </div>
+    </ng-template>
+
+    <nav aria-label="Page navigation" *ngIf="listDebts.length > 0">
+      <ul class="pagination">
+        <li class="page-item" (click)="prevPage()">
+          <a class="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of getCountItem(); let i = index"
+        >
+          <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" (click)="nextPage()">
+          <a class="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <ion-button
+      class="button-plus-debt"
+      (click)="toggleOpenModal()"
+      expand="block"
+      *ngIf="listDebts.length > 0"
+    >
+      <ion-icon name="add-outline"></ion-icon>
+      Nuevo deudor
+    </ion-button>
+
+    <ion-modal
+      #modal
+      [isOpen]="isOpenModal"
+      [enterAnimation]="enterAnimation"
+      [leaveAnimation]="leaveAnimation"
+      [presentingElement]="presentingElement"
+    >
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Nuevo Cliente</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding content-form-product">
+          <form [formGroup]="filterDebts" (ngSubmit)="onSubmit()">
+            <div class="content-inputs">
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingInput"
+                  required
+                  formControlName="Name"
+                />
+                <label for="floatingInput">Nombre del cliente *</label>
+                <div
+                  *ngIf="filterDebts.get('Name').invalid && filterDebts.get('Name').touched"
+                  class="alertErrorForm"
+                >
+                  <div *ngIf="filterDebts.get('Name').errors['required']">
+                    El nombre del cliente es requerido.
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingPhone"
+                  formControlName="Phone"
+                />
+                <label for="floatingPhone">Telefono</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingDebt"
+                  required
+                  formControlName="Debt"
+                />
+                <label for="floatingDebt">Deuda *</label>
+                <div
+                  *ngIf="filterDebts.get('Debt').invalid && filterDebts.get('Debt').touched"
+                  class="alertErrorForm"
+                >
+                  <div *ngIf="filterDebts.get('Debt').errors['required']">
+                    El valor de la deuda es requerida.
+                  </div>
+                  <div *ngIf="filterDebts.get('Debt').errors['min']">
+                    El valor de la deuda no puede ser 0
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="floatingDetail"
+                  formControlName="Detail"
+                />
+                <label for="floatingDetail">Detalle</label>
+              </div>
+            </div>
+            <div class="buttons-form">
+              <ion-button fill="outline" (click)="close()">Cerrar</ion-button>
+              <ion-button type="submit">Confirmar</ion-button>
+            </div>
+          </form>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </ion-content>
+</div>

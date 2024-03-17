@@ -2,16 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-initial-app',
+  templateUrl: './initial-app.page.html',
+  styleUrls: ['./initial-app.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RouterLink]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
-export class HomePage implements OnInit {
+export class InitialAppPage implements OnInit {
 
   constructor() { }
 

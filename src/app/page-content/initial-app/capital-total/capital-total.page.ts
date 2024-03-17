@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
-  selector: 'app-init-page',
-  templateUrl: './init-page.page.html',
-  styleUrls: ['./init-page.page.scss'],
+  selector: 'app-capital-total',
+  templateUrl: './capital-total.page.html',
+  styleUrls: ['./capital-total.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class InitPagePage implements OnInit {
+export class CapitalTotalPage implements OnInit {
 
   constructor() { }
 
