@@ -2,11 +2,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
-      path: 'inicio',
+      path: '',
       loadComponent: () => import('./home/home.page').then(m => m.HomePage)
     },
-  {
-    path: 'pagina-inicial',
-    loadComponent: () => import('./init-page/init-page.page').then( m => m.InitPagePage)
-  }
+    {
+      path: 'inicio',
+      loadChildren: () => import('./page-content/page.routes').then( m => m.routes_initial)
+    }
+
 ];
