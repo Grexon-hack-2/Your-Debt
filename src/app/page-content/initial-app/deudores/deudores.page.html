@@ -102,6 +102,7 @@
                   id="floatingInput"
                   required
                   formControlName="Name"
+                  placeholder="Nombre del cliente"
                 />
                 <label for="floatingInput">Nombre del cliente *</label>
                 <div
@@ -119,6 +120,7 @@
                   class="form-control"
                   id="floatingPhone"
                   formControlName="Phone"
+                  placeholder="Telefono"
                 />
                 <label for="floatingPhone">Telefono</label>
               </div>
@@ -129,6 +131,7 @@
                   id="floatingDebt"
                   required
                   formControlName="Debt"
+                  placeholder="Deuda"
                 />
                 <label for="floatingDebt">Deuda *</label>
                 <div
@@ -138,9 +141,6 @@
                   <div *ngIf="filterDebts.get('Debt').errors['required']">
                     El valor de la deuda es requerida.
                   </div>
-                  <div *ngIf="filterDebts.get('Debt').errors['min']">
-                    El valor de la deuda no puede ser 0
-                  </div>
                 </div>
               </div>
               <div class="form-floating mb-3">
@@ -149,6 +149,7 @@
                   class="form-control"
                   id="floatingDetail"
                   formControlName="Detail"
+                  placeholder="Detalle"
                 />
                 <label for="floatingDetail">Detalle</label>
               </div>

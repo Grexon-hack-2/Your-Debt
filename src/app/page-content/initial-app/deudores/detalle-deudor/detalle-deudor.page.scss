@@ -1,0 +1,22 @@
+
+
+ion-avatar {
+    --border-radius: 4px;
+}
+.info-client {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    padding-block-end: 20px;
+}
+ion-title {
+    padding: 0;
+}
+.message-none-debt {
+    position: absolute;
+    width: 90%;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
