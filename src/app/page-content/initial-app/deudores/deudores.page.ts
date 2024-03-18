@@ -31,10 +31,10 @@ export class DeudoresPage implements OnInit {
     private formBuilder: FormBuilder
     ) {
       this.filterDebts = new FormGroup({
-        Name: new FormControl(''),
-        Phone: new FormControl(''),
-        Debt: new FormControl(0),
-        Detail: new FormControl('')
+        Name: new FormControl(),
+        Phone: new FormControl(),
+        Debt: new FormControl(),
+        Detail: new FormControl()
       });
      }
 
@@ -53,7 +53,7 @@ export class DeudoresPage implements OnInit {
       {
         Name: ['', Validators.required],
         Phone: [''],
-        Debt: [0, [Validators.required, Validators.min(1)]],
+        Debt: [0, Validators.required],
         Detail: ['']
       }
     );
