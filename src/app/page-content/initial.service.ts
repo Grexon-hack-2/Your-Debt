@@ -28,6 +28,23 @@ export class InitialService {
     })
   }
 
+  deleteClient(id: string):string {
+    const indexToDelete = datos_de_prueba.listDebts.findIndex(debt => debt._id === id);
+
+    if(indexToDelete !== -1){
+      let elementDelete = datos_de_prueba.listDebts.splice(indexToDelete, 1)[0];
+
+      const deletedDebts = datos_de_prueba.deuda.filter( debt => debt.idCliente !== elementDelete._id);
+
+      datos_de_prueba.deuda = deletedDebts;
+
+      return 'El deudor ha sido eliminado con exito'
+    }
+    else {
+      return 'El deudor no existe en la base de datos'
+    }
+  }
+
   // productos -----------------------------------
 
   getAllProducts(): Product[] {
