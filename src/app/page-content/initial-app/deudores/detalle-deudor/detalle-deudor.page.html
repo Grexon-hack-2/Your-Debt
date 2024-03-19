@@ -63,7 +63,7 @@
         <ion-fab-button color="primary">
           <ion-icon name="send"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button color="danger">
+        <ion-fab-button color="danger" (click)="onDeleteClient()">
           <ion-icon name="trash"></ion-icon>
         </ion-fab-button>
         <ion-fab-button color="success" id="open-modal" expand="block">
@@ -86,28 +86,35 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="floatingNombredeudor" placeholder="Nombre deudor" disabled [(ngModel)]="NameDeudor">
-            <label for="floatingNombredeudor">Nombre deudor</label>
+          <div class="content-form">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingNombredeudor" placeholder="Nombre deudor" disabled [(ngModel)]="NameDeudor">
+              <label for="floatingNombredeudor">Nombre deudor</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="floatingCantidad" required placeholder="Cantidad" [(ngModel)]="quantity">
+              <label for="floatingCantidad">Cantidad</label>
+              <div class="errorCantid" *ngIf="errorCantidad">Este campo no puede ir vacio</div>
+            </div>
+            <select class="form-select form-select-lg" required [(ngModel)]="selectProduct">
+              <option selected>Producto</option>
+              @for (item of listProducts; track item._id) 
+              {
+                <option [value]="item._id">{{item.Name}}</option>
+              }
+            </select>
+            <div class="errorSelect" *ngIf="errorSelect">Este campo no puede ir vacio</div>
           </div>
-          <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="floatingCantidad" required placeholder="Cantidad" [(ngModel)]="quantity">
-            <label for="floatingCantidad">Cantidad</label>
-            <div class="errorCantid" *ngIf="errorCantidad">Este campo no puede ir vacio</div>
-          </div>
-          <select class="form-select form-select-lg" required [(ngModel)]="selectProduct">
-            <option selected>Producto</option>
-            @for (item of listProducts; track item._id) 
-            {
-              <option [value]="item._id">{{item.Name}}</option>
-            }
-          </select>
-          <div class="errorSelect" *ngIf="errorSelect">Este campo no puede ir vacio</div>
         </ion-content>
       </ng-template>
     </ion-modal>
 
-
+    <ion-toast
+    [isOpen]="isToastOpen"
+    [message]="messageToast"
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>
 <ion-footer [translucent]="true">
   <ion-toolbar>
