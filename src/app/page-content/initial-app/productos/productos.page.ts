@@ -6,6 +6,7 @@ import {
   AnimationController,
   IonModal,
   IonicModule,
+  ToastController,
 } from '@ionic/angular';
 import { InitialService } from '../../initial.service';
 import { Product } from 'src/Models/productModel';
@@ -32,7 +33,8 @@ export class ProductosPage implements OnInit {
     private service$: InitialService,
     private animationCtrl: AnimationController,
     private actionSheetCtrl: ActionSheetController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastController: ToastController
   ) 
   {
     this.filterProduct = new FormGroup({
@@ -44,8 +46,12 @@ export class ProductosPage implements OnInit {
   }
 
   ngOnInit() {
-    this.listProducts = this.service$.getAllProducts();
+    this.initialData();
     this.presentingElement = document.querySelector('.ion-page');
+  }
+
+  initialData() {
+    this.listProducts = this.service$.getAllProducts();
     this.buildFilterValidations();
   }
 
@@ -183,4 +189,26 @@ export class ProductosPage implements OnInit {
 
     return role === 'confirm';
   };
+
+  deleteProduct(id: string) {
+    try {
+      this.service$.deleteProduct(id);
+      this.initialData();
+      this.presentToast("El producto ha sido borrado con exito", "checkmark-done-circle" , "success");
+    } catch  {
+      this.presentToast("Ha ocurrido un error", "close-circle", "danger")
+    }
+  }
+
+  async presentToast(message: string, icon: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: 'top',
+      icon:icon,
+      color:color
+    });
+
+    await toast.present();
+  }
 }

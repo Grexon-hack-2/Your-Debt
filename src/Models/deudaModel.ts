@@ -6,3 +6,9 @@ export interface deudaModel {
     totalAccount:number,
     dateOfPurchase: Date
 }
+
+export interface abono {
+    _id:string,
+    idCliente:string,
+    pay:number
+}
