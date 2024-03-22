@@ -10,7 +10,7 @@
 
   <ion-content class="ion-padding">
     <table
-      class="table table-striped"
+      class="table"
       *ngIf="listProducts.length > 0;else withoutProduct"
     >
       <thead>
@@ -22,10 +22,11 @@
       </thead>
       <tbody>
         @for (item of getPageItems(); track item._id) {
-        <tr>
+        <tr [ngClass]="{'table-success': item.QuantityInStock >= 10, 'table-warning': item.QuantityInStock >= 5 && item.QuantityInStock < 10, 'table-danger': item.QuantityInStock < 5}">
           <td>{{item.Name}}</td>
           <td>{{item.UnitPrice}}</td>
           <td>{{item.QuantityInStock}}</td>
+          <td (click)="deleteProduct(item._id)"><ion-icon color="danger" name="remove-circle"></ion-icon></td>
         </tr>
         }
       </tbody>
@@ -39,7 +40,7 @@
           </ion-card-header>
 
           <ion-card-content> Agrega tu primer producto </ion-card-content>
-          <ion-button id="open-modal" expand="block">
+          <ion-button expand="block" (click)="toggleOpenModal()">
             <ion-icon name="add-outline"></ion-icon>
             Agregar Producto
           </ion-button>
