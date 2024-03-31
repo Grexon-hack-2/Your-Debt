@@ -1,14 +1,14 @@
 export interface deudaModel {
-    _id: string,
-    idCliente: string,
-    idProduct: string,
+    debtsID?: string,
+    debtorsID: string,
+    productID: string,
     quantity: number,
     totalAccount:number,
     dateOfPurchase: Date
 }
 
 export interface abono {
-    _id:string,
-    idCliente:string,
-    pay:number
+    abonoID:string,
+    debtorsID:string,
+    amountPaid:number
 }

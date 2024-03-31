@@ -1,4 +1,4 @@
-<div class="ion-page">
+<div class="ion-page" *ngIf="viewPage;else TemplateLoading">
   <ion-header [translucent]="true" id="main-content">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -21,12 +21,12 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of getPageItems(); track item._id) {
-        <tr [ngClass]="{'table-success': item.QuantityInStock >= 10, 'table-warning': item.QuantityInStock >= 5 && item.QuantityInStock < 10, 'table-danger': item.QuantityInStock < 5}">
-          <td>{{item.Name}}</td>
-          <td>{{item.UnitPrice}}</td>
-          <td>{{item.QuantityInStock}}</td>
-          <td (click)="deleteProduct(item._id)"><ion-icon color="danger" name="remove-circle"></ion-icon></td>
+        @for (item of getPageItems(); track item.productID) {
+        <tr [ngClass]="{'table-success': item.quantityInStock >= 10, 'table-warning': item.quantityInStock >= 5 && item.quantityInStock < 10, 'table-danger': item.quantityInStock < 5}">
+          <td>{{item.name}}</td>
+          <td>{{item.unitPrice}}</td>
+          <td>{{item.quantityInStock}}</td>
+          <td (click)="deleteProduct(item.productID)"><ion-icon color="danger" name="remove-circle"></ion-icon></td>
         </tr>
         }
       </tbody>
@@ -195,3 +195,13 @@
     </ion-modal>
   </ion-content>
 </div>
+<ng-template #TemplateLoading>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>PRODUCTOS</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </ion-content>
+</ng-template>

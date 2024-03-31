@@ -1,4 +1,4 @@
-<div class="ion-page">
+<div class="ion-page" *ngIf="viewPage;else templateLoading">
   <ion-header [translucent]="true" id="main-content">
     <ion-toolbar>
       <ion-buttons slot="start">
@@ -20,14 +20,14 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of getPageItems(); track item._id) {
+        @for (item of getPageItems(); track item.debtorsID) {
         <tr
           button
-          [routerLink]="['/inicio/deudores/detalle', item._id]"
+          [routerLink]="['/inicio/deudores/detalle', item.debtorsID]"
           routerLinkActive="router-link-active"
         >
-          <td>{{item.Name}}</td>
-          <td>${{item.Debt}}</td>
+          <td>{{item.name}}</td>
+          <td>${{item.debt}}</td>
         </tr>
         }
       </tbody>
@@ -164,3 +164,13 @@
     </ion-modal>
   </ion-content>
 </div>
+<ng-template #templateLoading>
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>DEUDORES</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
+  </ion-content>
+</ng-template>

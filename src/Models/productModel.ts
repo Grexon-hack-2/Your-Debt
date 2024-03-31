@@ -1,7 +1,7 @@
 export interface Product {
-    _id: string;
-    Name: string;
-    UnitPrice: number;
-    QuantityInStock: number;
-    MoneyInvested: number;
+    productID: string;
+    name: string;
+    unitPrice: number;
+    quantityInStock: number;
+    moneyInvested: number;
 }

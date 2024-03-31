@@ -1,8 +1,8 @@
 export interface listDebt {
-    _id: string,
-    Name: string,
-    Phone: string,
-    Debt: number,
-    Date: Date,
-    Detail: string
+    debtorsID: string,
+    name: string,
+    phone: string,
+    debt: number,
+    audit_CreatedOnDate: Date,
+    detail: string
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component,  ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionSheetController, AnimationController, IonModal, IonicModule } from '@ionic/angular';
+import { ActionSheetController, AnimationController, IonModal, IonicModule, ToastController } from '@ionic/angular';
 import { InitialService } from '../../initial.service';
 import { listDebt } from 'src/Models/listDebtsModel';
 import { RouterLink } from '@angular/router';
@@ -13,12 +13,12 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
 })
-export class DeudoresPage implements OnInit {
+export class DeudoresPage  {
   public filterDebts: FormGroup = new FormGroup({});
   public submitted = false;
   public isOpenModal: boolean = false;
   @ViewChild(IonModal) modal: IonModal;
-
+  public viewPage: boolean = false;
   public listDebts:listDebt[] = [];
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
@@ -28,20 +28,29 @@ export class DeudoresPage implements OnInit {
     private service$: InitialService,
     private animationCtrl: AnimationController,
     private actionSheetCtrl: ActionSheetController,
-    private formBuilder: FormBuilder
-    ) {
+    private formBuilder: FormBuilder,
+    private toastController: ToastController
+  ) {
       this.filterDebts = new FormGroup({
         Name: new FormControl(),
         Phone: new FormControl(),
         Debt: new FormControl(),
         Detail: new FormControl()
       });
-     }
+    }
 
-  ngOnInit() {
-    this.listDebts = this.service$.getAllDebts();
+
+  ionViewWillEnter(){
+    this.initData();
     this.presentingElement = document.querySelector('.ion-page');
     this.buildFilterValidations();
+  }
+  
+  initData(): void {
+    this.service$.getAllDebts().subscribe(data => {
+      this.listDebts = data;
+      this.viewPage = true;
+    })
   }
 
   toggleOpenModal(){
@@ -80,9 +89,14 @@ export class DeudoresPage implements OnInit {
         _id: `${Math.random() * 999}`
       };
 
-      this.service$.addNewClient(newDebt);
-
-      this.listDebts = this.service$.getAllDebts();
+      this.service$.addNewClient(newDebt).subscribe((resp: string) => {
+        this.presentToast(resp, "rocket" , "success")
+        this.initData();
+      },
+      (error) => {
+        this.presentToast(error, "close-circle", "danger")
+      }
+      )
 
     }
   }
@@ -178,5 +192,17 @@ export class DeudoresPage implements OnInit {
 
     return role === 'confirm';
   };
+
+  async presentToast(message: string, icon: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: 'top',
+      icon:icon,
+      color:color
+    });
+
+    await toast.present();
+  }
 
 }
