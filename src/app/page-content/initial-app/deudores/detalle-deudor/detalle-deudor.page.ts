@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActionSheetController, IonModal, IonicModule, ToastController } from '@ionic/angular';
@@ -15,7 +15,7 @@ import { abono, deudaModel } from 'src/Models/deudaModel';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class DetalleDeudorPage implements OnInit {
+export class DetalleDeudorPage {
   @ViewChild(IonModal) modal: IonModal;
   @ViewChild(IonModal) modal_abono: IonModal;
 
@@ -44,25 +44,27 @@ export class DetalleDeudorPage implements OnInit {
     private toastController: ToastController
     ) { }
 
-  ngOnInit():void {
+  ionViewWillEnter(){
     this.route$.params.subscribe(param => {
       const id = param['idClient'];
       this.idClient = id;
       this.getDetailClient(id);
     })
-
   }
 
   getDetailClient(id: string):void {
-    this.dataUser = this.service$.getDetailDebt(id);
-    this.listProducts = this.service$.getAllProducts();
-    this.NameDeudor = this.dataUser.Name;
-    this.showDetail = true;
-    this.nameDeudor = this.dataUser.Name
+    this.service$.getDetailDebt(id).subscribe((resp: listaDetallada) => {
+      this.dataUser = resp;
+      this.NameDeudor = this.dataUser.name;
+      this.showDetail = true;
+    })
+    this.service$.getAllProducts().subscribe( (products:Product[])=>{
+      this.listProducts = products;
+    })
   }
 
   getNameProduct(id: string): string{
-    return this.listProducts.find((item) => item._id === id).Name
+    return this.listProducts.find((item) => item.productID === id)?.name
   }
 
   cancel(): void {
@@ -80,21 +82,22 @@ export class DetalleDeudorPage implements OnInit {
 
       if(isValid) {
         let product = this.getProductById(this.selectProduct);
-       let cantidadAdeudada = this.quantity * product.UnitPrice;
+       let cantidadAdeudada = this.quantity * product.unitPrice;
         let deuda: deudaModel = {
-          _id: `${Math.random() * 999}`,
-          idCliente: this.idClient,
-          idProduct:product._id,
+          debtorsID: this.idClient,
+          productID:product.productID,
           quantity: this.quantity,
           totalAccount: cantidadAdeudada,
           dateOfPurchase: new Date()
         }
 
-        this.service$.addOneDebtTable(deuda);
-        this.service$.addOneDebtMore(this.idClient, cantidadAdeudada);
-        this.selectProduct = '';
-        this.quantity = 0;
-        this.getDetailClient(this.idClient);
+        this.service$.addOneDebtTable(deuda).subscribe((resp: string) => {
+          this.presentToast(resp, "rocket" , "success");
+          this.selectProduct = '';
+          this.quantity = 0;
+          this.getDetailClient(this.idClient);
+        })
+
       }
     }
   }
@@ -113,7 +116,7 @@ export class DetalleDeudorPage implements OnInit {
   }
 
   getProductById(id: string): Product {
-    return this.listProducts.find((item) => item._id === id)
+    return this.listProducts.find((item) => item.productID === id)
   }
 
   canDismiss = async (message: string = null) : Promise<boolean> => {
@@ -140,12 +143,15 @@ export class DetalleDeudorPage implements OnInit {
   };
 
   async onDeleteClient(): Promise<void> {
-    let text = this.dataUser.Debt > 0 ? `su deuda es de $${this.dataUser.Debt}` : null;
+    let text = this.dataUser.debt > 0 ? `su deuda es de $${this.dataUser.debt}` : null;
     if(await this.canDismiss(text)) {
-      this.messageToast = this.service$.deleteClient(this.idClient)
-      this.setOpen(true);
-      window.history.back()
+      this.service$.deleteClient(this.idClient).subscribe((resp: string)=>{
+        this.messageToast = resp;
+        this.setOpen(true);
+        window.history.back();
+      })
     }
+
   }
 
 
@@ -167,14 +173,14 @@ export class DetalleDeudorPage implements OnInit {
       if(this.montoAdeudado === undefined || this.montoAdeudado === null || this.montoAdeudado === 0){
         this.presentToast("El monto adeudado no puede ser 0", "close-circle", "danger")
       }
-      else if(this.montoAdeudado > this.dataUser.Debt) {
+      else if(this.montoAdeudado > this.dataUser.debt) {
         this.presentToast("El monto a pagar no puede ser mayor a la deuda", "close-circle", "danger");
       }
       else {
         const objAbono : abono = {
-          _id: `${Math.random() * 9999}`,
-          idCliente: this.idClient,
-          pay: this.montoAdeudado
+          abonoID: `${Math.random() * 9999}`,
+          debtorsID: this.idClient,
+          amountPaid: this.montoAdeudado
         }
 
         const response = this.service$.addAbonoClient(objAbono);

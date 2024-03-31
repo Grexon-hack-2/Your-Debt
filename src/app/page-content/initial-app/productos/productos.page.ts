@@ -1,6 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   ActionSheetController,
   AnimationController,
@@ -18,12 +24,12 @@ import { Product } from 'src/Models/productModel';
   standalone: true,
   imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
-export class ProductosPage implements OnInit {
+export class ProductosPage {
   public filterProduct: FormGroup = new FormGroup({});
   public submitted = false;
   public isOpenModal: boolean = false;
   @ViewChild(IonModal) modal: IonModal;
-  
+  public viewPage: boolean = false;
   public listProducts: Product[] = [];
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
@@ -35,39 +41,39 @@ export class ProductosPage implements OnInit {
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     private toastController: ToastController
-  ) 
-  {
+  ) {
     this.filterProduct = new FormGroup({
       Name: new FormControl(''),
       Quantity: new FormControl(0),
       MoneyInvested: new FormControl(0),
-      UnitPrice: new FormControl(0)
+      UnitPrice: new FormControl(0),
     });
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.initialData();
     this.presentingElement = document.querySelector('.ion-page');
   }
 
   initialData() {
-    this.listProducts = this.service$.getAllProducts();
+    this.service$.getAllProducts().subscribe((item: Product[]) => {
+      this.listProducts = item;
+      this.viewPage = true;
+    });
     this.buildFilterValidations();
   }
 
-  toggleOpenModal(){
+  toggleOpenModal() {
     this.isOpenModal = true;
   }
 
   buildFilterValidations() {
-    this.filterProduct = this.formBuilder.group(
-      {
-        Name: ['', Validators.required],
-        Quantity: [0, [Validators.required, Validators.min(1)]],
-        MoneyInvested: [0, [Validators.required, Validators.min(1)]],
-        UnitPrice: [0, [Validators.required, Validators.min(1)]]
-      }
-    );
+    this.filterProduct = this.formBuilder.group({
+      Name: ['', Validators.required],
+      Quantity: [0, [Validators.required, Validators.min(1)]],
+      MoneyInvested: [0, [Validators.required, Validators.min(1)]],
+      UnitPrice: [0, [Validators.required, Validators.min(1)]],
+    });
   }
 
   async onSubmit(): Promise<void> {
@@ -79,8 +85,8 @@ export class ProductosPage implements OnInit {
     }
 
     let valueConfirm = await this.confirm();
-    
-    if(valueConfirm){
+
+    if (valueConfirm) {
       let value = this.filterProduct.value;
       this.filterProduct.reset();
       this.modal.dismiss();
@@ -88,13 +94,18 @@ export class ProductosPage implements OnInit {
       let productEnd: Product = {
         ...value,
         QuantityInStock: value.Quantity,
-        _id: `${Math.random() * 999}`
+        _id: `${Math.random() * 999}`,
       };
 
-      this.service$.addOneProduct(productEnd);
-
-      this.listProducts = this.service$.getAllProducts();
-
+      this.service$.addOneProduct(productEnd).subscribe(
+        async (resp) => {
+          await this.presentToast(resp, 'checkmark-done-circle', 'success');
+          this.initialData();
+        },
+        async (error) => {
+          await this.presentToast(error, 'close-circle', 'danger');
+        }
+      );
     }
   }
 
@@ -158,7 +169,7 @@ export class ProductosPage implements OnInit {
     return this.enterAnimation(baseEl).direction('reverse');
   };
 
-  close(){
+  close() {
     this.filterProduct.reset();
     this.modal.dismiss('cerrar');
     this.isOpenModal = false;
@@ -168,7 +179,7 @@ export class ProductosPage implements OnInit {
     return await this.canDismiss();
   }
 
-  canDismiss = async () : Promise<boolean> => {
+  canDismiss = async (): Promise<boolean> => {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Estás segur@?',
       buttons: [
@@ -191,13 +202,17 @@ export class ProductosPage implements OnInit {
   };
 
   deleteProduct(id: string) {
-    try {
-      this.service$.deleteProduct(id);
-      this.initialData();
-      this.presentToast("El producto ha sido borrado con exito", "checkmark-done-circle" , "success");
-    } catch  {
-      this.presentToast("Ha ocurrido un error", "close-circle", "danger")
-    }
+      this.service$.deleteProduct(id).subscribe((resp: string) => {
+        this.initialData();
+        this.presentToast(
+          resp,
+          'checkmark-done-circle',
+          'success'
+        );
+      },
+      (error) => {
+        this.presentToast(error, 'close-circle', 'danger');
+      })
   }
 
   async presentToast(message: string, icon: string, color: string) {
@@ -205,8 +220,8 @@ export class ProductosPage implements OnInit {
       message: message,
       duration: 2500,
       position: 'top',
-      icon:icon,
-      color:color
+      icon: icon,
+      color: color,
     });
 
     await toast.present();
