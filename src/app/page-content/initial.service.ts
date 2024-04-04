@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { deudaModel } from 'src/Models/deudaModel';
 import { listDebt } from 'src/Models/listDebtsModel';
 import { Product } from 'src/Models/productModel';
-import { datos_de_prueba } from 'src/Utils/dataTest';
 import { Your_debts_httpService } from '../Services/your_debts_http.service';
 
 @Injectable({
@@ -60,50 +59,13 @@ export class InitialService {
 
   // payment ---------------------------
 
-  addAbonoClient(_pay: abono):string {
-    try {
-      datos_de_prueba.listDebts.forEach((item) => {
-        if(item.debtorsID === _pay.debtorsID) {
-          item.debt -= _pay.amountPaid;
-          item.debt = item.debt < 0 ? 0 : item.debt;
-          datos_de_prueba.abono.push(_pay)
-          if(item.debt <= 0){
-            datos_de_prueba.deuda = datos_de_prueba.deuda.filter(debt => debt.debtorsID != _pay.debtorsID );
-            datos_de_prueba.abono = datos_de_prueba.abono.filter(abono => abono.debtorsID != _pay.debtorsID);
-          }
-        }
-      })
-
-      return "El abono a sido ingresado exitosamente";
-
-    } catch (error) {
-      return "Ha ocurrido un error"
-    }
+  addAbonoClient(_pay: abono):Observable<string> {
+    const url = "api/Debts/AddAbonoToUser";
+    return this.httpService$.post<string>(url, _pay);
   }
   
 }
 
-// function getDataFullDebt(id: string): listaDetallada {
-//     let DataDebtClient: listDebt = datos_de_prueba.listDebts.find((item) => item.debtorsID === id)
-
-//     let dataResult: listaDetallada = {
-//       debtorsID: DataDebtClient.debtorsID,
-//       name : DataDebtClient.name,
-//       phone: DataDebtClient.phone,
-//       debt: DataDebtClient.debt,
-//       audit_CreatedOnDate: DataDebtClient.audit_CreatedOnDate,
-//       detail: DataDebtClient.detail,
-//       DebtList: []
-//     }
-
-//     datos_de_prueba.deuda.forEach((item) => {
-//       if(item.idCliente === id){
-//         dataResult.DebtList.push(item)
-//       }
-//     })
-    
-//     return dataResult;
-// }
 export interface listaDetallada extends listDebt {
   listaDeudas: deudaModel[],
   amountPaid: number

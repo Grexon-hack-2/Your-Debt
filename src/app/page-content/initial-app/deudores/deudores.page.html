@@ -41,7 +41,7 @@
           </ion-card-header>
 
           <ion-card-content> Agrega tu primer cliente </ion-card-content>
-          <ion-button id="open-modal" expand="block">
+          <ion-button (click)="toggleOpenModal()" expand="block">
             <ion-icon name="add-outline"></ion-icon>
             Nuevo deudor
           </ion-button>

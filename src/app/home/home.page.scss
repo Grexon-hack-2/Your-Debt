@@ -1,7 +1,34 @@
-
-.page-welcome {
+.container-login{
+    background: radial-gradient(ellipse at top, #8ceea4, transparent),
+    radial-gradient(ellipse at bottom, #7088a2, transparent);
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+
+    .conteiner-form {
+        height: 300px;
+        width: 280px;
+        padding: 10px;
+        border-radius: 6px;
+        box-shadow: 1px 1px 6px rgb(43, 189, 226);
+        background-color: transparent;
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            color: black;
+            .content-input ion-input {
+                border-radius: 20px;
+                box-shadow: inset 2px 1px 4px gray;
+                padding: 0 10px !important;
+            }
+            .container-error {
+                font-size: 12px;
+                padding-left: 12px;
+            }
+        }
+    }
 }

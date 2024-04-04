@@ -1,21 +1,24 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
+import { AuthService } from 'src/Utils/Auth.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Your_debts_httpService {
-  private token: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJ7XCJVc2VyQWRtaW5JRFwiOlwiOWE5YzM4NTMtMTA3MC00ODQ5LTkzMTMtMzM5MmQyNDRiZTE1XCIsXCJOYW1lVXNlclwiOlwiam9zZV8yMzA2XCIsXCJQYXNzd29yZFwiOlwiZTVmYWMyNzNlZjJiNWQyMTJmN2Y1YjAyMzVjM2NmNjkyNzFlZTA5MjRkY2VlOGVjZWE5NmU3ODc1MWQxM2VkN1wiLFwiRW1haWxcIjpcImpzYXJhYmlhbHVnbzIzMDZAZ21haWwuY29tXCJ9IiwibmJmIjoxNzExNTA3NzcyLCJleHAiOjE3MTQxODYxNzIsImlhdCI6MTcxMTUwNzc3Mn0.J2GmrZnmVInbZFsTSQ-xYIQoERQibCKlK2b5sy3DHag";
+  private token: string = "";
   public basePatch = environment.your_debts_core;
 
   /**
    *
    */
-  constructor(private _http: HttpClient) 
+  constructor(private _http: HttpClient, private _auth: AuthService) 
   {
-
+    this._auth.getToken.subscribe((resp:string) => {
+      this.token = resp;
+    })
   }
 
   getWithHeaders<T>(url: string): Observable<any>{

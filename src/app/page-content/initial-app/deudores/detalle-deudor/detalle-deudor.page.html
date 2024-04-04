@@ -120,8 +120,7 @@
               [(ngModel)]="selectProduct"
               (ngModelChange)="onInputProductChange($event)"
             >
-              <option selected>Producto</option>
-              <option *ngFor="let item of listProducts" [value]="item.productID">{{ item.name }}</option>
+              <option slot="bottom" *ngFor="let item of listProducts" [value]="item.productID">{{ item.name }}</option>
             </select>
             <div class="alertErrorForm" *ngIf="errorSelect">
               Este campo es requerido *

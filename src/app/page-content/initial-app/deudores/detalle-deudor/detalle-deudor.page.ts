@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/Models/productModel';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { abono, deudaModel } from 'src/Models/deudaModel';
+import { ToastService } from 'src/Utils/ToastService';
 
 @Component({
   selector: 'app-detalle-deudor',
@@ -41,7 +42,7 @@ export class DetalleDeudorPage {
     private service$: InitialService, 
     private route$: ActivatedRoute,
     private actionSheetCtrl: ActionSheetController,
-    private toastController: ToastController
+    private _toastService: ToastService
     ) { }
 
   ionViewWillEnter(){
@@ -92,7 +93,7 @@ export class DetalleDeudorPage {
         }
 
         this.service$.addOneDebtTable(deuda).subscribe((resp: string) => {
-          this.presentToast(resp, "rocket" , "success");
+          this._toastService.presentToast(resp, "rocket" , "success");
           this.selectProduct = '';
           this.quantity = 0;
           this.getDetailClient(this.idClient);
@@ -171,37 +172,25 @@ export class DetalleDeudorPage {
   confirm_abono() {
       
       if(this.montoAdeudado === undefined || this.montoAdeudado === null || this.montoAdeudado === 0){
-        this.presentToast("El monto adeudado no puede ser 0", "close-circle", "danger")
+        this._toastService.presentToast("El monto adeudado no puede ser 0", "close-circle", "danger")
       }
       else if(this.montoAdeudado > this.dataUser.debt) {
-        this.presentToast("El monto a pagar no puede ser mayor a la deuda", "close-circle", "danger");
+        this._toastService.presentToast("El monto a pagar no puede ser mayor a la deuda", "close-circle", "danger");
       }
       else {
         const objAbono : abono = {
-          abonoID: `${Math.random() * 9999}`,
           debtorsID: this.idClient,
           amountPaid: this.montoAdeudado
         }
 
-        const response = this.service$.addAbonoClient(objAbono);
+        this.service$.addAbonoClient(objAbono).subscribe(resp => {
+          this._toastService.presentToast(resp, "rocket" , "success");
+          this.montoAdeudado = 0;
+          this.setOpen_abono(false);
+          this.getDetailClient(this.idClient);
+        })
 
-        this.presentToast(response, "rocket" , "success");
-        this.montoAdeudado = 0;
-        this.setOpen_abono(false);
-        this.getDetailClient(this.idClient);
       }
-  }
-
-  async presentToast(message: string, icon: string, color: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2500,
-      position: 'top',
-      icon:icon,
-      color:color
-    });
-
-    await toast.present();
   }
 
   onInputQuantityChange(event: Event) {
