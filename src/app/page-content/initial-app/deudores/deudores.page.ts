@@ -5,6 +5,7 @@ import { ActionSheetController, AnimationController, IonModal, IonicModule, Toas
 import { InitialService } from '../../initial.service';
 import { listDebt } from 'src/Models/listDebtsModel';
 import { RouterLink } from '@angular/router';
+import { ToastService } from 'src/Utils/ToastService';
 
 @Component({
   selector: 'app-deudores',
@@ -29,7 +30,8 @@ export class DeudoresPage  {
     private animationCtrl: AnimationController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private _toastService: ToastService
   ) {
       this.filterDebts = new FormGroup({
         Name: new FormControl(),
@@ -90,11 +92,11 @@ export class DeudoresPage  {
       };
 
       this.service$.addNewClient(newDebt).subscribe((resp: string) => {
-        this.presentToast(resp, "rocket" , "success")
+        this._toastService.presentToast(resp, "rocket" , "success");
         this.initData();
       },
       (error) => {
-        this.presentToast(error, "close-circle", "danger")
+        this._toastService.presentToast(error, "close-circle", "danger")
       }
       )
 
@@ -192,17 +194,5 @@ export class DeudoresPage  {
 
     return role === 'confirm';
   };
-
-  async presentToast(message: string, icon: string, color: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2500,
-      position: 'top',
-      icon:icon,
-      color:color
-    });
-
-    await toast.present();
-  }
 
 }

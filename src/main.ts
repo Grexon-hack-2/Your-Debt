@@ -7,6 +7,7 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http';
+import { LocalStorageService } from 'ngx-webstorage';
 
 if (environment.production) {
   enableProdMode();
@@ -17,6 +18,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes),
-    provideHttpClient()
+    provideHttpClient(),
+    LocalStorageService
   ],
 }).catch(error => console.log(error))

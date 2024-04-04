@@ -8,7 +8,7 @@ export interface deudaModel {
 }
 
 export interface abono {
-    abonoID:string,
+    abonoID?:string,
     debtorsID:string,
     amountPaid:number
 }

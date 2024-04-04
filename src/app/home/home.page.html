@@ -4,6 +4,34 @@
   </ion-toolbar>
 </ion-header>
 
-<div class="page-welcome">
-      <ion-button [routerLink]="['/inicio']">iniciar</ion-button>
-</div>
+  <ion-content>
+    <div class="container-login">
+        <div class="conteiner-form">
+          
+          <form [formGroup]="formUser" (ngSubmit)="onSubmit()">
+            <div class="content-input">
+              <ion-input required formControlName="user" type="text" placeholder="Nombre del usuario"></ion-input>
+              <div *ngIf="formUser.get('user').invalid && formUser.get('user').touched" class="container-error">
+                <ion-text color="danger" class="form-error">
+                  Por favor ingresa un usuario valido.
+                </ion-text>
+              </div>
+            </div>
+            <div class="content-input">
+                <ion-input required formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+              <div *ngIf="formUser.get('password').invalid && formUser.get('password').touched" class="container-error">
+                <ion-text color="danger" class="form-error">
+                  La contraseña es Requerida.
+                </ion-text>
+              </div>
+            </div>
+            <ion-button type="submit" [disabled]="!formUser.valid">
+              Ingresar
+            </ion-button>
+          </form>
+        </div>
+       <ion-text color="primary" button [routerLink]="['/register']" routerLinkActive="router-link-active" >Registrarse</ion-text>
+    </div>
+
+  </ion-content>
+

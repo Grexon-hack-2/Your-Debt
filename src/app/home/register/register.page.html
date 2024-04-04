@@ -1,0 +1,95 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="content-form-register">
+    <form (ngSubmit)="onSubmit()" [formGroup]="formRegister">
+      <ion-list>
+
+        <!-- nombre personal -->
+        <ion-item>
+          <ion-input labelPlacement="floating" formControlName="Name">
+            <div slot="label">Nombre <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <div *ngIf="formRegister.get('Name').invalid && formRegister.get('Name').touched" class="container-error">
+          <ion-text color="danger" class="form-error">
+            Por favor ingresa tu nombre personal.
+          </ion-text>
+        </div>
+
+        <!-- usuario para ingresar -->
+        <ion-item>
+          <ion-input labelPlacement="floating" formControlName="UserName">
+            <div slot="label">Nombre de usuario <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <div *ngIf="formRegister.get('UserName').invalid && formRegister.get('UserName').touched" class="container-error">
+          <ion-text *ngIf="formRegister.get('UserName').hasError('required')" color="danger" class="form-error">
+            Por favor agregue un nombre para ingresar a la plataforma.
+          </ion-text>
+          <ion-text *ngIf="formRegister.get('UserName').hasError('pattern')" color="danger" class="form-error">
+            caracteres requeridos [ A-Z, a-z, - o _ ].
+          </ion-text>
+        </div>
+
+        <!-- Email y verificación -->
+        <ion-item>
+          <ion-input labelPlacement="floating" formControlName="Email">
+            <div slot="label">Email <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <div *ngIf="formRegister.get('Email').invalid && formRegister.get('Email').touched" class="container-error">
+          <ion-text *ngIf="formRegister.get('Email').hasError('required')" color="danger" class="form-error">
+            El Email es requerido.
+          </ion-text>
+          <ion-text *ngIf="formRegister.get('Email').hasError('pattern')" color="danger" class="form-error">
+            Agrege un email valido.
+          </ion-text>
+        </div>
+
+        <!-- contraseña y verificación de contraseñas -->
+        <ion-item>
+          <ion-input type="password" labelPlacement="floating" formControlName="Password">
+            <div slot="label">Contraseña <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <div *ngIf="formRegister.get('Password').invalid && formRegister.get('Password').touched" class="container-error">
+          <ion-text *ngIf="formRegister.get('Password').hasError('required')" color="danger" class="form-error">
+            La contraseña es requerida.
+          </ion-text>
+          <ion-text *ngIf="formRegister.get('Password').hasError('pattern')" color="danger" class="form-error">
+            caracteres requeridos [ A-z, 0-9, - o _ ].
+          </ion-text>
+          <br>
+          <ion-text *ngIf="formRegister.get('Password').hasError('minlength')" color="danger" class="form-error">
+            Debe tener al menos 8 caracteres.
+          </ion-text>
+        </div>
+
+        <ion-item>
+          <ion-input type="password" labelPlacement="floating" formControlName="Password_confirm" (ngModelChange)="checkPasswords($event)" >
+            <div slot="label">Confirmar contraseña <ion-text color="danger">*</ion-text></div>
+          </ion-input>
+        </ion-item>
+        <div *ngIf="formRegister.get('Password_confirm').invalid && formRegister.get('Password_confirm').touched" class="container-error">
+          <ion-text *ngIf="formRegister.get('Password_confirm').hasError('required')" color="danger" class="form-error">
+            La confirmación es requerida.
+          </ion-text>
+          <ion-text *ngIf="formRegister.get('Password_confirm').hasError('MatchPassword')" color="danger" class="form-error">
+            Contraseña invalida.
+          </ion-text>
+        </div>
+      </ion-list>
+      <ion-button type="submit" [disabled]="!formRegister.valid">
+        Registrar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

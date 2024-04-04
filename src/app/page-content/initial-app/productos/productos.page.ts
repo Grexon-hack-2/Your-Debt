@@ -16,6 +16,7 @@ import {
 } from '@ionic/angular';
 import { InitialService } from '../../initial.service';
 import { Product } from 'src/Models/productModel';
+import { ToastService } from 'src/Utils/ToastService';
 
 @Component({
   selector: 'app-productos',
@@ -40,7 +41,7 @@ export class ProductosPage {
     private animationCtrl: AnimationController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
-    private toastController: ToastController
+    private _toastService: ToastService
   ) {
     this.filterProduct = new FormGroup({
       Name: new FormControl(''),
@@ -99,11 +100,11 @@ export class ProductosPage {
 
       this.service$.addOneProduct(productEnd).subscribe(
         async (resp) => {
-          await this.presentToast(resp, 'checkmark-done-circle', 'success');
+          await this._toastService.presentToast(resp, 'checkmark-done-circle', 'success');
           this.initialData();
         },
         async (error) => {
-          await this.presentToast(error, 'close-circle', 'danger');
+          await this._toastService.presentToast(error, 'close-circle', 'danger');
         }
       );
     }
@@ -204,26 +205,14 @@ export class ProductosPage {
   deleteProduct(id: string) {
       this.service$.deleteProduct(id).subscribe((resp: string) => {
         this.initialData();
-        this.presentToast(
+        this._toastService.presentToast(
           resp,
           'checkmark-done-circle',
           'success'
         );
       },
       (error) => {
-        this.presentToast(error, 'close-circle', 'danger');
+        this._toastService.presentToast(error, 'close-circle', 'danger');
       })
-  }
-
-  async presentToast(message: string, icon: string, color: string) {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2500,
-      position: 'top',
-      icon: icon,
-      color: color,
-    });
-
-    await toast.present();
   }
 }
