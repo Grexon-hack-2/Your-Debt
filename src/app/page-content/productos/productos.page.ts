@@ -1,116 +1,123 @@
-import { Component,  ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionSheetController, AnimationController, IonModal, IonicModule, ToastController } from '@ionic/angular';
-import { InitialService } from '../../initial.service';
-import { listDebt } from 'src/Models/listDebtsModel';
-import { RouterLink } from '@angular/router';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  ActionSheetController,
+  AnimationController,
+  IonModal,
+  IonicModule,
+  ToastController,
+} from '@ionic/angular';
+import { InitialService } from '../initial.service';
+import { Product } from 'src/Models/productModel';
 import { ToastService } from 'src/Utils/ToastService';
 
 @Component({
-  selector: 'app-deudores',
-  templateUrl: './deudores.page.html',
-  styleUrls: ['./deudores.page.scss'],
+  selector: 'app-productos',
+  templateUrl: './productos.page.html',
+  styleUrls: ['./productos.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
-export class DeudoresPage  {
-  public filterDebts: FormGroup = new FormGroup({});
+export class ProductosPage {
+  public filterProduct: FormGroup = new FormGroup({});
   public submitted = false;
   public isOpenModal: boolean = false;
   @ViewChild(IonModal) modal: IonModal;
   public viewPage: boolean = false;
-  public listDebts:listDebt[] = [];
+  public listProducts: Product[] = [];
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
   public presentingElement: Element | null = null;
-  
+
   constructor(
     private service$: InitialService,
     private animationCtrl: AnimationController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
-    private toastController: ToastController,
     private _toastService: ToastService
   ) {
-      this.filterDebts = new FormGroup({
-        Name: new FormControl(),
-        Phone: new FormControl(),
-        Debt: new FormControl(),
-        Detail: new FormControl()
-      });
-    }
+    this.filterProduct = new FormGroup({
+      Name: new FormControl(''),
+      Quantity: new FormControl(0),
+      MoneyInvested: new FormControl(0),
+      UnitPrice: new FormControl(0),
+    });
+  }
 
-
-  ionViewWillEnter(){
-    this.initData();
+  ionViewWillEnter() {
+    this.initialData();
     this.presentingElement = document.querySelector('.ion-page');
+  }
+
+  initialData() {
+    this.service$.getAllProducts().subscribe((item: Product[]) => {
+      this.listProducts = item;
+      this.viewPage = true;
+    });
     this.buildFilterValidations();
   }
-  
-  initData(): void {
-    this.service$.getAllDebts().subscribe(data => {
-      this.listDebts = data;
-      this.viewPage = true;
-    })
-  }
 
-  toggleOpenModal(){
+  toggleOpenModal() {
     this.isOpenModal = true;
   }
 
   buildFilterValidations() {
-    this.filterDebts = this.formBuilder.group(
-      {
-        Name: ['', Validators.required],
-        Phone: [''],
-        Debt: [0, Validators.required],
-        Detail: ['']
-      }
-    );
+    this.filterProduct = this.formBuilder.group({
+      Name: ['', Validators.required],
+      Quantity: [0, [Validators.required, Validators.min(1)]],
+      MoneyInvested: [0, [Validators.required, Validators.min(1)]],
+      UnitPrice: [0, [Validators.required, Validators.min(1)]],
+    });
   }
 
   async onSubmit(): Promise<void> {
     this.submitted = true;
 
-    if (this.filterDebts.invalid) {
-      this.filterDebts.markAllAsTouched();
+    if (this.filterProduct.invalid) {
+      this.filterProduct.markAllAsTouched();
       return;
     }
 
     let valueConfirm = await this.confirm();
-    
-    if(valueConfirm){
-      let value = this.filterDebts.value;
-      this.filterDebts.reset();
+
+    if (valueConfirm) {
+      let value = this.filterProduct.value;
+      this.filterProduct.reset();
       this.modal.dismiss();
       this.isOpenModal = false;
-      let newDebt: listDebt = {
+      let productEnd: Product = {
         ...value,
-        Date: new Date(),
-        _id: `${Math.random() * 999}`
+        QuantityInStock: value.Quantity,
+        _id: `${Math.random() * 999}`,
       };
 
-      this.service$.addNewClient(newDebt).subscribe((resp: string) => {
-        this._toastService.presentToast(resp, "rocket" , "success");
-        this.initData();
-      },
-      (error) => {
-        this._toastService.presentToast(error, "close-circle", "danger")
-      }
-      )
-
+      this.service$.addOneProduct(productEnd).subscribe(
+        async (resp) => {
+          await this._toastService.presentToast(resp, 'checkmark-done-circle', 'success');
+          this.initialData();
+        },
+        async (error) => {
+          await this._toastService.presentToast(error, 'close-circle', 'danger');
+        }
+      );
     }
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.listDebts.length / this.itemsPerPage);
+    return Math.ceil(this.listProducts.length / this.itemsPerPage);
   }
 
-  getPageItems(): listDebt[] {
+  getPageItems(): Product[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.listDebts.slice(startIndex, endIndex);
+    return this.listProducts.slice(startIndex, endIndex);
   }
 
   goToPage(page: number): void {
@@ -163,8 +170,8 @@ export class DeudoresPage  {
     return this.enterAnimation(baseEl).direction('reverse');
   };
 
-  close(){
-    this.filterDebts.reset();
+  close() {
+    this.filterProduct.reset();
     this.modal.dismiss('cerrar');
     this.isOpenModal = false;
   }
@@ -173,7 +180,7 @@ export class DeudoresPage  {
     return await this.canDismiss();
   }
 
-  canDismiss = async () : Promise<boolean> => {
+  canDismiss = async (): Promise<boolean> => {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Estás segur@?',
       buttons: [
@@ -195,4 +202,17 @@ export class DeudoresPage  {
     return role === 'confirm';
   };
 
+  deleteProduct(id: string) {
+      this.service$.deleteProduct(id).subscribe((resp: string) => {
+        this.initialData();
+        this._toastService.presentToast(
+          resp,
+          'checkmark-done-circle',
+          'success'
+        );
+      },
+      (error) => {
+        this._toastService.presentToast(error, 'close-circle', 'danger');
+      })
+  }
 }

@@ -341,7 +341,17 @@
     --ion-toolbar-border-color: var(--ion-color-step-750);
   }
 
+  .ios body ion-alert {
+    --ion-background-color: var(--ion-background-color);
+    --ion-toolbar-background: var(--ion-color-step-450);
+    --ion-toolbar-border-color: var(--ion-color-step-750);
 
+  }
+
+  .sc-ion-alert-ios-h{
+    --background : #636161 !important;
+    font-weight: 500;
+  }
   /*
    * Material Design Dark Theme
    * -------------------------------------------
