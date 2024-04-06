@@ -45,46 +45,65 @@
       </ion-select>
     </ion-item>
     <div class="content-target">
-      <div class="content-target-by-product" *ngIf="isDataProduct;else templateGrafic">
-        <div class="target-contability">
-          <div>Inversión: {{productData.moneyInvested | currency}}</div>
-          <div>Precio de compra: {{productData.moneyInvested / productData.quantityInStock | currency}}</div>
-          <div>Precio de venta: {{productData.unitPrice | currency}}</div>
-          <div>Cantidad comprada: {{productData.quantityInStock}}</div>
-        </div>
-        <div class="target-contability">
-          <h4>Ganancias</h4>
-          <div>{{(((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested) / productData.moneyInvested) * 100 | number:'0.1-2'}}%</div>
-          <div>
-            Cantidad: {{((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested)  | currency}}
+      <ion-grid class="content-target-by-product ion-justify-content-center" *ngIf="isDataProduct;else templateGrafic">
+        <ion-row>
+          <ion-col>
+            <ion-grid class="target-contability first-target">
+              <ion-row>
+                <ion-col>
+                  <div>Inversión: {{productData.moneyInvested | currency}}</div>
+                  <div>Precio de compra: {{productData.moneyInvested / productData.quantityInStock | currency}}</div>
+                  <div>Precio de venta: {{productData.unitPrice | currency}}</div>
+                  <div>Cantidad comprada: {{productData.quantityInStock}}</div>
+                </ion-col>
+                <ion-col class="img-money">
+                  <img src="/assets/money.png" alt="Icon Money" sizes="small"/>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div class="target-contability">
+              <h4>Ganancias</h4>
+              <div class="sales-data" style="font-size: 25px;">{{(((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested) / productData.moneyInvested) * 100 | number:'0.1-2'}}%</div>
+              <div>
+                Cantidad: {{((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested)  | currency}}
+              </div>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div class="target-contability">
+              <h4>Ventas</h4>
+              <div class="sales-data">
+                {{(38 / productData.quantityInStock) * 100 | number:'0.1-2'}}%
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-col sizeXl="12">
+          <div class="target-contability" *ngIf="chartOptionsPie !== undefined">
+            <apx-chart
+            [series]="chartOptionsPie.series2"
+            [chart]="chartOptionsPie.chart"
+            [dataLabels]="chartOptionsPie.dataLabels"
+            [fill]="chartOptionsPie.fill"
+            [legend]="chartOptionsPie.legend"
+            [responsive]="chartOptionsPie.responsive"
+            [title]="chartOptionsPie.title"
+          ></apx-chart>
           </div>
-        </div>
-        <div class="target-contability">
-          <h4>Ventas</h4>
-          <div>
-            {{(38 / productData.quantityInStock) * 100 | number:'0.1-2'}}%
-          </div>
-        </div>
-        <div class="target-contability" *ngIf="chartOptions !== undefined">
-          <apx-chart
-          [series]="chartOptions.series2"
-          [chart]="chartOptions.chart"
-          [dataLabels]="chartOptions.dataLabels"
-          [fill]="chartOptions.fill"
-          [legend]="chartOptions.legend"
-          [responsive]="chartOptions.responsive"
-          [title]="chartOptions.title"
-        ></apx-chart>
-        </div>
-      </div>
+        </ion-col>
+      </ion-grid>
       <ng-template #templateGrafic>
-        <div class="content-target-grafic" *ngIf="chartOptions !== undefined">
+        <div class="content-target-grafic" *ngIf="chartOptionsBar !== undefined">
           <apx-chart
-          [series]="chartOptions.series"
-          [chart]="chartOptions.chart"
-          [xaxis]="chartOptions.xaxis"
-          [title]="chartOptions.title"
-          [fill]="chartOptions.fill"
+          [series]="chartOptionsBar.series"
+          [chart]="chartOptionsBar.chart"
+          [xaxis]="chartOptionsBar.xaxis"
+          [title]="chartOptionsBar.title"
+          [fill]="chartOptionsBar.fill"
         ></apx-chart>
         </div>
       </ng-template>

@@ -115,13 +115,11 @@
                 Este campo es requerido *
               </div>
             </div>
-            <select
-              class="form-select form-select-lg"
-              [(ngModel)]="selectProduct"
-              (ngModelChange)="onInputProductChange($event)"
-            >
-              <option slot="bottom" *ngFor="let item of listProducts" [value]="item.productID">{{ item.name }}</option>
-            </select>
+              <ion-item>
+                <ion-select label="Producto"  multiple="false" placeholder="Select Product" [(ngModel)]="selectProduct" (ngModelChange)="onInputProductChange($event)">
+                  <ion-select-option *ngFor="let item of listProducts" [value]="item.productID">{{item.name}}</ion-select-option>
+                </ion-select>
+              </ion-item>
             <div class="alertErrorForm" *ngIf="errorSelect">
               Este campo es requerido *
             </div>

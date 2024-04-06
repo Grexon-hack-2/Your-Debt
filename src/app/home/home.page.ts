@@ -29,7 +29,7 @@ export class HomePage  {
 
  onSubmit(){
     if(!this.formUser.invalid) {
-      this.loginSession$.sessionLogin(this.formUser.value).subscribe(data => {
+      this.loginSession$.sessionLogin(this.formUser.value).subscribe(()=> {
         this.router$.navigate(['inicio']);
       },
       ({error: {msg}}) => {
