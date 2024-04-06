@@ -1,34 +1,87 @@
-.container-login{
-    background: radial-gradient(ellipse at top, #8ceea4, transparent),
-    radial-gradient(ellipse at bottom, #7088a2, transparent);
+.container-login {
+  background: url(../../assets/R.jpg) no-repeat center;
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+
+  .conteiner-form-gradient {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-
-    .conteiner-form {
-        height: 300px;
-        width: 280px;
-        padding: 10px;
-        border-radius: 6px;
-        box-shadow: 1px 1px 6px rgb(43, 189, 226);
-        background-color: transparent;
-        form {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            color: black;
-            .content-input ion-input {
-                border-radius: 20px;
-                box-shadow: inset 2px 1px 4px gray;
-                padding: 0 10px !important;
-            }
-            .container-error {
-                font-size: 12px;
-                padding-left: 12px;
-            }
+    background: linear-gradient(30deg, white 60%, transparent);
+    .logo-header {
+      div {
+        text-align: center;
+        h1 {
+          font-weight: 700;
+          font-family: monospace;
+          font-size: 40px;
+          color: #00ff5c;
+          text-shadow: 0 0 4px black;
         }
+        h3 {
+          font-size: medium;
+          font-weight: 500;
+        }
+      }
     }
+    .conteiner-form {
+      width: -webkit-fill-available;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      hr {
+        margin: 0;
+      }
+      .container-error {
+        font-size: 12px;
+      }
+      .content-button {
+        margin-top: 20px;
+        button {
+          width: -webkit-fill-available;
+          padding: 2px;
+          font-size: larger;
+          color: aliceblue;
+          background-color: #00ff5c;
+          box-shadow: 0 0 4px gray;
+        }
+      }
+      .content-link-register {
+        text-align: center;
+        color: gray;
+      }
+    }
+    // .conteiner-form {
+    //     height: 300px;
+    //     width: 280px;
+    //     padding: 10px;
+    //     border-radius: 6px;
+    //     box-shadow: 1px 1px 6px rgb(82, 82, 83);
+    //     background-color: transparent;
+    //     form {
+    //         display: flex;
+    //         flex-direction: column;
+    //         justify-content: space-between;
+    //         height: 100%;
+    //         color: black;
+    //         backdrop-filter:  blur(5px);
+    //         padding: 10px;
+    //         color: black;
+    //         font-weight: 700;
+    //         .content-input ion-input {
+    //             border-radius: 20px;
+    //             box-shadow: inset 2px 1px 4px gray;
+    //             padding: 0 10px !important;
+    //         }
+    //         .container-error {
+    //             font-size: 12px;
+    //             padding-left: 12px;
+    //         }
+    //     }
+    // }
+  }
 }

@@ -47,7 +47,8 @@ export type ChartOptions = {
 })
 export class InitialAppPage implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptionsBar: Partial<ChartOptions>;
+  public chartOptionsPie: Partial<ChartOptions>;
 
   themeToggle = false;
   @ViewChild('popover') popover;
@@ -117,7 +118,7 @@ export class InitialAppPage implements OnInit {
     this.service$.getAllProducts().subscribe((item: Product[]) => {
       this.listProducts = item;
     
-      this.chartOptions = {
+      this.chartOptionsBar = {
         series: [
           {
             name: 'My-series',
@@ -148,10 +149,10 @@ export class InitialAppPage implements OnInit {
     const dataLegend = ['Inversión', 'Ganancias']
     this.productData = event.detail.value;
 
-    this.chartOptions = {
+    this.chartOptionsPie = {
       series2: [this.productData.moneyInvested, (this.productData.unitPrice * this.productData.quantityInStock - this.productData.moneyInvested)],
       chart: {
-        width: 480,
+        width: 500,
         type: "donut"
       },
       dataLabels: {
@@ -164,6 +165,10 @@ export class InitialAppPage implements OnInit {
       legend: {
         formatter: function(val, opts) {
           return dataLegend[opts.seriesIndex] + " - " + opts.w.globals.series[opts.seriesIndex];
+        },
+        containerMargin: {
+          left: 5,
+          top: 5,
         }
       },
       title: {
@@ -171,10 +176,10 @@ export class InitialAppPage implements OnInit {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 700,
           options: {
             chart: {
-              width: 400
+              width: "100%"
             },
             legend: {
               position: "bottom"

@@ -1,37 +1,75 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Tu deuda</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-  <ion-content>
-    <div class="container-login">
-        <div class="conteiner-form">
-          
-          <form [formGroup]="formUser" (ngSubmit)="onSubmit()">
-            <div class="content-input">
-              <ion-input required formControlName="user" type="text" placeholder="Nombre del usuario"></ion-input>
-              <div *ngIf="formUser.get('user').invalid && formUser.get('user').touched" class="container-error">
-                <ion-text color="danger" class="form-error">
-                  Por favor ingresa un usuario valido.
-                </ion-text>
-              </div>
-            </div>
-            <div class="content-input">
-                <ion-input required formControlName="password" type="password" placeholder="Contraseña"></ion-input>
-              <div *ngIf="formUser.get('password').invalid && formUser.get('password').touched" class="container-error">
-                <ion-text color="danger" class="form-error">
-                  La contraseña es Requerida.
-                </ion-text>
-              </div>
-            </div>
-            <ion-button type="submit" [disabled]="!formUser.valid">
-              Ingresar
-            </ion-button>
-          </form>
+<ion-content>
+  <div class="container-login">
+    <div class="conteiner-form-gradient">
+      <div class="logo-header">
+       <div>
+        <h1>Your Debts</h1>
+        <h3>Pay for God to help you</h3>
+       </div>
+      </div>
+      <div class="conteiner-form">
+        <h3>Login</h3>
+        <div>
+          <h3>
+            Hello there !
+          </h3>
+          <h3>welcome Back</h3>
         </div>
-       <ion-text color="primary" button [routerLink]="['/register']" routerLinkActive="router-link-active" >Registrarse</ion-text>
+        <form [formGroup]="formUser" (ngSubmit)="onSubmit()">
+          <div class="content-input">
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input
+              required
+              formControlName="user"
+              type="text"
+              placeholder="Username"
+            ></ion-input>
+            <hr>
+            <div
+              *ngIf="formUser.get('user').invalid && formUser.get('user').touched"
+              class="container-error"
+            >
+              <ion-text color="danger" class="form-error">
+                Please enter a valid username.
+              </ion-text>
+            </div>
+          </div>
+          <div class="content-input">
+            <ion-label position="stacked">Password</ion-label>
+            <ion-input
+              required
+              formControlName="password"
+              type="password"
+              placeholder="Enter the password"
+            ></ion-input>
+            <hr>
+            <div
+              *ngIf="formUser.get('password').invalid && formUser.get('password').touched"
+              class="container-error"
+            >
+              <ion-text color="danger" class="form-error">
+                Password is required.
+              </ion-text>
+            </div>
+          </div>
+          <div class="content-button">
+            <button type="submit" [disabled]="!formUser.valid">
+              Enter
+            </button>
+          </div>
+        </form>
+        <div class="content-link-register">
+          Don't  have an account?
+          <ion-text
+          color="primary"
+          button
+          [routerLink]="['/register']"
+          routerLinkActive="router-link-active"
+          >Register</ion-text
+        >
+        </div>
+
+      </div>
     </div>
-
-  </ion-content>
-
+  </div>
+</ion-content>
