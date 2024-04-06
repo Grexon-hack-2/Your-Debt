@@ -5,7 +5,7 @@ import { RegisterPage } from './register/register.page';
 export const ROUTES_LOGIN: Routes = [
   {
     path: '',
-    component: HomePage,
+    loadComponent: () => import('./home.page').then(m => m.HomePage),
   },
   {
     path: 'register',

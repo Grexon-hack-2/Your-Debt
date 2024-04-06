@@ -5,19 +5,25 @@
     </ion-buttons>
     <ion-title>TU DEUDA</ion-title>
     <ion-avatar slot="end" (click)="presentPopover($event)">
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      <img
+        alt="Silhouette of a person's head"
+        src="https://ionicframework.com/docs/img/demos/avatar.svg"
+      />
     </ion-avatar>
     <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
       <ng-template>
         <ion-content class="ion-padding">
-          <ion-item>
+          <ion-item (click)="sessionOut()">
             <ion-icon size="small" name="lock-closed"></ion-icon>
             <ion-label>Cerrar sesión</ion-label>
           </ion-item>
           <ion-item>
-            <ion-toggle [(ngModel)]="themeToggle" (ionChange)="toggleChange($event)" justify="space-between"
-            >Dark Mode</ion-toggle
-          >
+            <ion-toggle
+              [(ngModel)]="themeToggle"
+              (ionChange)="toggleChange($event)"
+              justify="space-between"
+              >Dark Mode</ion-toggle
+            >
           </ion-item>
         </ion-content>
       </ng-template>
@@ -25,6 +31,64 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div>
+    <ion-text style="font-weight: 600">
+      <h1>Bienvenida,</h1>
+      <p>{{nameUser}}. <span style="font-size: 25px">👋</span></p>
+    </ion-text>
+  </div>
+  <div class="content-dashboard">
+    <ion-item>
+      <ion-select label="Producto" value="Todos" multiple="false" placeholder="Selecciona el producto" (ionChange)="onChange($event)">
+        <ion-select-option *ngFor="let item of listProducts" [value]="item">{{item.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="content-target">
+      <div class="content-target-by-product" *ngIf="isDataProduct;else templateGrafic">
+        <div class="target-contability">
+          <div>Inversión: {{productData.moneyInvested | currency}}</div>
+          <div>Precio de compra: {{productData.moneyInvested / productData.quantityInStock | currency}}</div>
+          <div>Precio de venta: {{productData.unitPrice | currency}}</div>
+          <div>Cantidad comprada: {{productData.quantityInStock}}</div>
+        </div>
+        <div class="target-contability">
+          <h4>Ganancias</h4>
+          <div>{{(((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested) / productData.moneyInvested) * 100 | number:'0.1-2'}}%</div>
+          <div>
+            Cantidad: {{((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested)  | currency}}
+          </div>
+        </div>
+        <div class="target-contability">
+          <h4>Ventas</h4>
+          <div>
+            {{(38 / productData.quantityInStock) * 100 | number:'0.1-2'}}%
+          </div>
+        </div>
+        <div class="target-contability" *ngIf="chartOptions !== undefined">
+          <apx-chart
+          [series]="chartOptions.series2"
+          [chart]="chartOptions.chart"
+          [dataLabels]="chartOptions.dataLabels"
+          [fill]="chartOptions.fill"
+          [legend]="chartOptions.legend"
+          [responsive]="chartOptions.responsive"
+          [title]="chartOptions.title"
+        ></apx-chart>
+        </div>
+      </div>
+      <ng-template #templateGrafic>
+        <div class="content-target-grafic" *ngIf="chartOptions !== undefined">
+          <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [title]="chartOptions.title"
+          [fill]="chartOptions.fill"
+        ></apx-chart>
+        </div>
+      </ng-template>
 
+    </div>
+  </div>
 </ion-content>
