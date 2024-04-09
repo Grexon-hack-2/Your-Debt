@@ -1,7 +1,7 @@
 <ion-app>
   <ion-menu contentId="main-content">
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="success">
         <ion-title>Contenido</ion-title>
       </ion-toolbar>
     </ion-header>
@@ -16,6 +16,9 @@
         </ion-item>
         <ion-item [routerLink]="['/inicio/productos']">
           <ion-label>Productos</ion-label>
+        </ion-item>
+        <ion-item [routerLink]="['/inicio/others-debts']">
+          <ion-label>Otras deudas</ion-label>
         </ion-item>
         <ion-item [routerLink]="['/inicio/capital-total']">
           <ion-label>Capital</ion-label>

@@ -3,11 +3,5 @@
     "@ionic/angular/common",
     "@ionic/angular"
   ],
-  "cSpell.words": [
-    "Contenido",
-    "Deudores",
-    "Inicio",
-    "Productos",
-    "Prueba"
-  ]
+  "angular.enable-strict-mode-prompt": false
 }

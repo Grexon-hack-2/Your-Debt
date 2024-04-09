@@ -1,6 +1,6 @@
 <div class="ion-page" *ngIf="viewPage;else templateLoading">
   <ion-header [translucent]="true" id="main-content">
-    <ion-toolbar>
+    <ion-toolbar color="success">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -41,7 +41,7 @@
           </ion-card-header>
 
           <ion-card-content> Agrega tu primer cliente </ion-card-content>
-          <ion-button (click)="toggleOpenModal()" expand="block">
+          <ion-button color="success" (click)="toggleOpenModal()" expand="block">
             <ion-icon name="add-outline"></ion-icon>
             Nuevo deudor
           </ion-button>
@@ -69,7 +69,7 @@
         </li>
       </ul>
     </nav>
-    <ion-button
+    <ion-button color="success"
       class="button-plus-debt"
       (click)="toggleOpenModal()"
       expand="block"
@@ -88,7 +88,7 @@
     >
       <ng-template>
         <ion-header>
-          <ion-toolbar>
+          <ion-toolbar color="success">
             <ion-title>Nuevo Cliente</ion-title>
           </ion-toolbar>
         </ion-header>
@@ -124,7 +124,7 @@
                 />
                 <label for="floatingPhone">Telefono</label>
               </div>
-              <div class="form-floating mb-3">
+              <!-- <div class="form-floating mb-3">
                 <input
                   type="number"
                   class="form-control"
@@ -142,7 +142,7 @@
                     El valor de la deuda es requerida.
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="form-floating mb-3">
                 <input
                   type="text"
@@ -155,8 +155,8 @@
               </div>
             </div>
             <div class="buttons-form">
-              <ion-button fill="outline" (click)="close()">Cerrar</ion-button>
-              <ion-button type="submit">Confirmar</ion-button>
+              <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
+              <ion-button color="success" type="submit">Confirmar</ion-button>
             </div>
           </form>
         </ion-content>
@@ -166,7 +166,7 @@
 </div>
 <ng-template #templateLoading>
   <ion-header [translucent]="true">
-    <ion-toolbar>
+    <ion-toolbar color="success">
       <ion-title>DEUDORES</ion-title>
     </ion-toolbar>
   </ion-header>

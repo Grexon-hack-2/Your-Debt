@@ -1,20 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActionSheetController, IonModal, IonicModule, ToastController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { InitialService, listaDetallada } from 'src/app/page-content/initial.service';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/Models/productModel';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { abono, deudaModel } from 'src/Models/deudaModel';
 import { ToastService } from 'src/Utils/ToastService';
+import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
+import { IonModal } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-detalle-deudor',
   templateUrl: './detalle-deudor.page.html',
   styleUrls: ['./detalle-deudor.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule]
 })
 export class DetalleDeudorPage {
   @ViewChild(IonModal) modal: IonModal;

@@ -9,21 +9,20 @@ import {
 } from '@angular/forms';
 import {
   ActionSheetController,
-  AnimationController,
-  IonModal,
-  IonicModule,
-  ToastController,
+  AnimationController
 } from '@ionic/angular';
 import { InitialService } from '../initial.service';
 import { Product } from 'src/Models/productModel';
 import { ToastService } from 'src/Utils/ToastService';
+import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
+import { IonModal } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.page.html',
   styleUrls: ['./productos.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule],
+  imports: [...InterfaceIonic.ArrayInterface, CommonModule, ReactiveFormsModule],
 })
 export class ProductosPage {
   public filterProduct: FormGroup = new FormGroup({});
@@ -45,9 +44,9 @@ export class ProductosPage {
   ) {
     this.filterProduct = new FormGroup({
       Name: new FormControl(''),
-      Quantity: new FormControl(0),
-      MoneyInvested: new FormControl(0),
-      UnitPrice: new FormControl(0),
+      Quantity: new FormControl(),
+      MoneyInvested: new FormControl(),
+      UnitPrice: new FormControl(),
     });
   }
 
@@ -71,9 +70,9 @@ export class ProductosPage {
   buildFilterValidations() {
     this.filterProduct = this.formBuilder.group({
       Name: ['', Validators.required],
-      Quantity: [0, [Validators.required, Validators.min(1)]],
-      MoneyInvested: [0, [Validators.required, Validators.min(1)]],
-      UnitPrice: [0, [Validators.required, Validators.min(1)]],
+      Quantity: ['', [Validators.required, Validators.min(1)]],
+      MoneyInvested: ['', [Validators.required, Validators.min(1)]],
+      UnitPrice: ['', [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -94,8 +93,7 @@ export class ProductosPage {
       this.isOpenModal = false;
       let productEnd: Product = {
         ...value,
-        QuantityInStock: value.Quantity,
-        _id: `${Math.random() * 999}`,
+        QuantityInStock: value.Quantity
       };
 
       this.service$.addOneProduct(productEnd).subscribe(

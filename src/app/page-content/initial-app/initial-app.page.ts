@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
 import { SessionService } from 'src/app/home/Session.service';
 import { AuthService } from 'src/Utils/Auth.service';
 import { UserData } from 'src/Models/sessionModel';
@@ -23,6 +22,9 @@ import {
   ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
 
+import { InterfaceIonic } from '../../../Utils/ExpInterfaceIonic';
+import { IonPopover } from '@ionic/angular/standalone';
+
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -43,7 +45,12 @@ export type ChartOptions = {
   templateUrl: './initial-app.page.html',
   styleUrls: ['./initial-app.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, NgApexchartsModule],
+  imports: [
+    ...InterfaceIonic.ArrayInterface,
+    CommonModule,
+    FormsModule,
+    NgApexchartsModule,
+  ],
 })
 export class InitialAppPage implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
@@ -51,7 +58,7 @@ export class InitialAppPage implements OnInit {
   public chartOptionsPie: Partial<ChartOptions>;
 
   themeToggle = false;
-  @ViewChild('popover') popover;
+  @ViewChild('popover') popover: IonPopover;
   public isOpen = false;
   public listProducts: Product[] = [];
 
@@ -86,7 +93,7 @@ export class InitialAppPage implements OnInit {
     this.initData();
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.initData();
   }
 
@@ -114,15 +121,17 @@ export class InitialAppPage implements OnInit {
   }
 
   initData() {
-    this.isDataProduct =false;
+    this.isDataProduct = false;
     this.service$.getAllProducts().subscribe((item: Product[]) => {
       this.listProducts = item;
-    
+
       this.chartOptionsBar = {
         series: [
           {
             name: 'My-series',
-            data: item.map((x) => x.unitPrice * x.quantityInStock - x.moneyInvested),
+            data: item.map(
+              (x) => x.unitPrice * x.quantityPurchased - x.moneyInvested
+            ),
           },
         ],
         chart: {
@@ -130,8 +139,8 @@ export class InitialAppPage implements OnInit {
           type: 'bar',
         },
         fill: {
-          type: "gradient",
-          colors: ['#CB85EE', '#7BDAF5'],
+          type: 'gradient',
+          colors: ['#69bb7b', '#7BDAF5'],
         },
         title: {
           text: 'Graficos, ganancias por producto',
@@ -140,53 +149,61 @@ export class InitialAppPage implements OnInit {
           categories: item.map((x) => x.name),
         },
       };
-
     });
   }
 
   onChange(event: CustomEvent) {
-    this.isDataProduct = true;
-    const dataLegend = ['Inversión', 'Ganancias']
-    this.productData = event.detail.value;
+    if (event.detail.value !== undefined) {
+      this.isDataProduct = true;
+      const dataLegend = ['Inversión', 'Ganancias'];
+      this.productData = event.detail.value;
 
-    this.chartOptionsPie = {
-      series2: [this.productData.moneyInvested, (this.productData.unitPrice * this.productData.quantityInStock - this.productData.moneyInvested)],
-      chart: {
-        width: 500,
-        type: "donut"
-      },
-      dataLabels: {
-        enabled: true
-      },
-      fill: {
-        type: "gradient"
-        
-      },
-      legend: {
-        formatter: function(val, opts) {
-          return dataLegend[opts.seriesIndex] + " - " + opts.w.globals.series[opts.seriesIndex];
+      this.chartOptionsPie = {
+        series2: [
+          this.productData.moneyInvested,
+          this.productData.unitPrice * this.productData.quantityPurchased -
+            this.productData.moneyInvested,
+        ],
+        chart: {
+          width: 500,
+          type: 'donut',
         },
-        containerMargin: {
-          left: 5,
-          top: 5,
-        }
-      },
-      title: {
-        text: 'Graficos, ganancias por producto',
-      },
-      responsive: [
-        {
-          breakpoint: 700,
-          options: {
-            chart: {
-              width: "100%"
+        dataLabels: {
+          enabled: true,
+        },
+        fill: {
+          type: 'gradient',
+        },
+        legend: {
+          formatter: function (val, opts) {
+            return (
+              dataLegend[opts.seriesIndex] +
+              ' - ' +
+              opts.w.globals.series[opts.seriesIndex]
+            );
+          },
+          containerMargin: {
+            left: 5,
+            top: 5,
+          },
+        },
+        title: {
+          text: 'Graficos, ganancias por producto',
+        },
+        responsive: [
+          {
+            breakpoint: 700,
+            options: {
+              chart: {
+                width: '100%',
+              },
+              legend: {
+                position: 'bottom',
+              },
             },
-            legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
-    };
+          },
+        ],
+      };
+    }
   }
 }
