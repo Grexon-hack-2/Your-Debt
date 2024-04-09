@@ -1,6 +1,6 @@
 <div class="ion-page" *ngIf="viewPage;else TemplateLoading">
   <ion-header [translucent]="true" id="main-content">
-    <ion-toolbar>
+    <ion-toolbar color="success">
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -41,7 +41,7 @@
           </ion-card-header>
 
           <ion-card-content> Agrega tu primer producto </ion-card-content>
-          <ion-button expand="block" (click)="toggleOpenModal()">
+          <ion-button color="success" expand="block" (click)="toggleOpenModal()">
             <ion-icon name="add-outline"></ion-icon>
             Agregar Producto
           </ion-button>
@@ -75,6 +75,7 @@
       (click)="toggleOpenModal()"
       expand="block"
       *ngIf="listProducts.length > 0"
+      color="success"
     >
       <ion-icon name="add-outline"></ion-icon>
       Agregar Producto
@@ -89,7 +90,7 @@
     >
       <ng-template>
         <ion-header>
-          <ion-toolbar>
+          <ion-toolbar color="success">
             <ion-title>Nuevo producto</ion-title>
           </ion-toolbar>
         </ion-header>
@@ -187,8 +188,8 @@
               </div>
             </div>
             <div class="buttons-form">
-              <ion-button fill="outline" (click)="close()">Cerrar</ion-button>
-              <ion-button type="submit">Confirmar</ion-button>
+              <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
+              <ion-button color="success" type="submit">Confirmar</ion-button>
             </div>
           </form>
         </ion-content>
@@ -198,7 +199,7 @@
 </div>
 <ng-template #TemplateLoading>
   <ion-header [translucent]="true">
-    <ion-toolbar>
+    <ion-toolbar color="success">
       <ion-title>PRODUCTOS</ion-title>
     </ion-toolbar>
   </ion-header>

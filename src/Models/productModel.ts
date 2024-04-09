@@ -4,4 +4,5 @@ export interface Product {
     unitPrice: number;
     quantityInStock: number;
     moneyInvested: number;
+    quantityPurchased: number;
 }

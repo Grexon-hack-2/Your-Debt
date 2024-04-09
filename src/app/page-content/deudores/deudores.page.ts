@@ -1,18 +1,20 @@
 import { Component,  ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActionSheetController, AnimationController, IonModal, IonicModule, ToastController } from '@ionic/angular';
+import { ActionSheetController, AnimationController, ToastController } from '@ionic/angular';
 import { InitialService } from '../initial.service';
 import { listDebt } from 'src/Models/listDebtsModel';
 import { RouterLink } from '@angular/router';
 import { ToastService } from 'src/Utils/ToastService';
+import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
+import { IonModal } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-deudores',
   templateUrl: './deudores.page.html',
   styleUrls: ['./deudores.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
+  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
 })
 export class DeudoresPage  {
   public filterDebts: FormGroup = new FormGroup({});
@@ -36,7 +38,6 @@ export class DeudoresPage  {
       this.filterDebts = new FormGroup({
         Name: new FormControl(),
         Phone: new FormControl(),
-        Debt: new FormControl(),
         Detail: new FormControl()
       });
     }
@@ -64,7 +65,6 @@ export class DeudoresPage  {
       {
         Name: ['', Validators.required],
         Phone: [''],
-        Debt: [0, Validators.required],
         Detail: ['']
       }
     );
@@ -87,8 +87,8 @@ export class DeudoresPage  {
       this.isOpenModal = false;
       let newDebt: listDebt = {
         ...value,
+        debt:0,
         Date: new Date(),
-        _id: `${Math.random() * 999}`
       };
 
       this.service$.addNewClient(newDebt).subscribe((resp: string) => {

@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" id="main-content">
-  <ion-toolbar>
+  <ion-toolbar color="success">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -52,9 +52,9 @@
               <ion-row>
                 <ion-col>
                   <div>Inversión: {{productData.moneyInvested | currency}}</div>
-                  <div>Precio de compra: {{productData.moneyInvested / productData.quantityInStock | currency}}</div>
+                  <div>Precio de compra: {{productData.moneyInvested / productData.quantityPurchased | currency}}</div>
                   <div>Precio de venta: {{productData.unitPrice | currency}}</div>
-                  <div>Cantidad comprada: {{productData.quantityInStock}}</div>
+                  <div>Cantidad comprada: {{productData.quantityPurchased}}</div>
                 </ion-col>
                 <ion-col class="img-money">
                   <img src="/assets/money.png" alt="Icon Money" sizes="small"/>
@@ -67,9 +67,9 @@
           <ion-col>
             <div class="target-contability">
               <h4>Ganancias</h4>
-              <div class="sales-data" style="font-size: 25px;">{{(((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested) / productData.moneyInvested) * 100 | number:'0.1-2'}}%</div>
+              <div class="sales-data" style="font-size: 25px;">{{(((productData.unitPrice * productData.quantityPurchased) - productData.moneyInvested) / productData.moneyInvested) * 100 | number:'0.1-2'}}%</div>
               <div>
-                Cantidad: {{((productData.unitPrice * productData.quantityInStock) - productData.moneyInvested)  | currency}}
+                Cantidad: {{((productData.unitPrice * productData.quantityPurchased) - productData.moneyInvested)  | currency}}
               </div>
             </div>
           </ion-col>
@@ -77,7 +77,7 @@
             <div class="target-contability">
               <h4>Ventas</h4>
               <div class="sales-data">
-                {{(38 / productData.quantityInStock) * 100 | number:'0.1-2'}}%
+                {{(productData.quantityInStock / productData.quantityPurchased) * 100 | number:'0.1-2'}}%
               </div>
             </div>
           </ion-col>

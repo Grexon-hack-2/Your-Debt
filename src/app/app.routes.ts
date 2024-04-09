@@ -16,4 +16,5 @@ export const routes: Routes = [
     path: '**',
     loadComponent: () => import('./not-found/not-found.page').then( m => m.NotFoundPage)
   }
+
 ];

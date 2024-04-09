@@ -1,5 +1,5 @@
 {
-  "name": "Your-Debt",
+  "name": "your-debts-app",
   "integrations": {
     "capacitor": {}
   },

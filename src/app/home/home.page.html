@@ -15,18 +15,19 @@
           </h3>
           <h3>welcome Back</h3>
         </div>
-        <form [formGroup]="formUser" (ngSubmit)="onSubmit()">
+        <form [formGroup]="formUser" (ngSubmit)="onSubmit()" novalidate>
           <div class="content-input">
             <ion-label position="stacked">Name</ion-label>
             <ion-input
               required
+              ngDefaultControl
               formControlName="user"
               type="text"
               placeholder="Username"
             ></ion-input>
             <hr>
             <div
-              *ngIf="formUser.get('user').invalid && formUser.get('user').touched"
+              *ngIf="this.formUser.controls['user'].invalid && this.formUser.controls['user'].touched"
               class="container-error"
             >
               <ion-text color="danger" class="form-error">
@@ -38,6 +39,7 @@
             <ion-label position="stacked">Password</ion-label>
             <ion-input
               required
+              ngDefaultControl
               formControlName="password"
               type="password"
               placeholder="Enter the password"
@@ -53,9 +55,9 @@
             </div>
           </div>
           <div class="content-button">
-            <button type="submit" [disabled]="!formUser.valid">
-              Enter
-            </button>
+            <ion-button expand="block" fill="clear" type="submit" [disabled]="!formUser.valid">
+              Ingresar
+            </ion-button>
           </div>
         </form>
         <div class="content-link-register">
