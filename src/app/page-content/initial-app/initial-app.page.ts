@@ -24,6 +24,7 @@ import {
 
 import { InterfaceIonic } from '../../../Utils/ExpInterfaceIonic';
 import { IonPopover } from '@ionic/angular/standalone';
+import { PersistenceService } from 'src/Utils/Persistence.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -67,20 +68,33 @@ export class InitialAppPage implements OnInit {
   public isDataProduct: boolean = false;
 
   public productData: Product;
-
+  private readonly keyThemeColor: string = "color-Theme";
   constructor(
     private session$: SessionService,
     private _auth: AuthService,
-    private service$: InitialService
+    private service$: InitialService,
+    private _persistence: PersistenceService
   ) {}
 
   ngOnInit() {
     this._auth.getDataUser.subscribe(
       (resp: UserData) => (this.nameUser = resp.PersonName)
     );
+    this.initData();
+  }
 
-    // Use matchMedia to check the user preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: light)');
+  ionViewWillEnter() {
+    let colorThemeInitial = this._persistence.get(this.keyThemeColor);
+    let prefersDark: MediaQueryList;
+
+    if(colorThemeInitial === null) {
+      this._persistence.save(this.keyThemeColor, "light");
+
+      prefersDark = window.matchMedia('(prefers-color-scheme: light)');
+    }
+    else {
+      prefersDark = window.matchMedia(`(prefers-color-scheme: ${colorThemeInitial})`);
+    }
 
     // Initialize the dark theme based on the initial
     // value of the prefers-color-scheme media query
@@ -90,10 +104,6 @@ export class InitialAppPage implements OnInit {
     prefersDark.addEventListener('change', (mediaQuery) =>
       this.initializeDarkTheme(mediaQuery.matches)
     );
-    this.initData();
-  }
-
-  ionViewWillEnter() {
     this.initData();
   }
 
@@ -113,6 +123,8 @@ export class InitialAppPage implements OnInit {
 
   // Add or remove the "dark" class on the document body
   toggleDarkTheme(shouldAdd: boolean) {
+    if(shouldAdd) this._persistence.save(this.keyThemeColor, "dark");
+      else this._persistence.save(this.keyThemeColor, 'light')
     document.body.classList.toggle('dark', shouldAdd);
   }
 

@@ -17,7 +17,7 @@ th, td{
     font-size: 12px;
     color: rgb(240, 81, 81);
 }
-.content-form-product{
+.content-form-product-deudores{
     background: linear-gradient(180deg, white 60%, transparent);
     height: 100%;
     position: relative;
@@ -37,7 +37,7 @@ th, td{
     }
 }
 
-.content-form-product::before{
+.content-form-product-deudores::before{
     content: "";
     position: absolute;
     top: 0;
