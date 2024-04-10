@@ -55,3 +55,12 @@ ion-item {
 .md ion-footer ion-title{
     padding-left: 10px;
 }
+
+body.dark {
+    .content-form-product{
+        background: linear-gradient(30deg, black 60%, transparent);
+    }
+    .content-form-product-deudores{
+        background: linear-gradient(180deg, black 60%, transparent);
+    }
+}
