@@ -18,3 +18,17 @@ ion-title {
     justify-content: center;
     align-items: center;
 }
+
+.content-pricetotal {
+    margin-top: 20px;
+    border: 2px solid darkseagreen;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 0 4px mediumspringgreen;
+    .price {
+        padding: 5px;
+        text-align: center;
+        font-size: x-large;
+        font-weight: 600;
+    }
+}

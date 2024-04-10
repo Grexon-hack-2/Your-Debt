@@ -88,7 +88,6 @@ export class DeudoresPage  {
       let newDebt: listDebt = {
         ...value,
         debt:0,
-        Date: new Date(),
       };
 
       this.service$.addNewClient(newDebt).subscribe((resp: string) => {

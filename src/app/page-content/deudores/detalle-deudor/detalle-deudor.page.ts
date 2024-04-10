@@ -70,6 +70,10 @@ export class DetalleDeudorPage {
     return this.listProducts.find((item) => item.productID === id)?.name
   }
 
+  getPriceProduct(): number{
+    return this.listProducts.find((item) => item.productID === this.selectProduct)?.unitPrice ?? 0;
+  }
+
   cancel(): void {
     this.modal.dismiss(null, 'cancel');
   }
@@ -203,6 +207,10 @@ export class DetalleDeudorPage {
   onInputProductChange(event: Event){
     if(event != null) this.errorSelect = false;
       else this.errorSelect = true;
+  }
+
+  showWholesalePrice(): boolean{
+    return this.quantity > 0 && (this.selectProduct !== null && this.selectProduct !== undefined);
   }
 
 }

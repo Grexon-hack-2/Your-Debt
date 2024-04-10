@@ -12,17 +12,38 @@ th, td{
     bottom: 10px;
     right: 5px;
 }
-.content-form-product form {
+.content-form-product{
+    background: linear-gradient(30deg, white 60%, transparent);
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    .buttons-form {
-        width: 100%;
+    position: relative;
+    form {
+        height: 100%;
         display: flex;
-        justify-content: space-around;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 10px;
+        backdrop-filter: blur(3px);
+        border-radius: 10px;
+        .buttons-form {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+        }
     }
 }
+
+.content-form-product::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../../../assets/R.jpg) no-repeat center;
+    background-size: cover;
+    z-index: -1;
+}
+
 .contentFlex {
     height: 100%;
     display: flex;
