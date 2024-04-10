@@ -7,7 +7,7 @@
       <ion-title>Detalle del deudor</ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content *ngIf="showDetail" class="ion-padding">
     <div class="info-client">
       <ion-avatar>
@@ -54,13 +54,17 @@
         </ng-template>
       </table>
     </div>
-  
+
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button color="success">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
       <ion-fab-list side="top">
-        <ion-fab-button [disabled]="!dataUser.listaDeudas" color="primary" (click)="setOpen_abono(true)">
+        <ion-fab-button
+          [disabled]="!dataUser.listaDeudas"
+          color="primary"
+          (click)="setOpen_abono(true)"
+        >
           <ion-icon name="cash-outline"></ion-icon>
         </ion-fab-button>
         <ion-fab-button color="danger" (click)="onDeleteClient()">
@@ -71,13 +75,15 @@
         </ion-fab-button>
       </ion-fab-list>
     </ion-fab>
-  
+
     <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
       <ng-template>
         <ion-header>
           <ion-toolbar color="success">
             <ion-buttons slot="start">
-              <ion-button color="primary" (click)="cancel()">Cancelar</ion-button>
+              <ion-button color="primary" (click)="cancel()"
+                >Cancelar</ion-button
+              >
             </ion-buttons>
             <ion-title>Nueva deuda</ion-title>
             <ion-buttons slot="end">
@@ -89,86 +95,130 @@
         </ion-header>
         <ion-content class="ion-padding">
           <div class="content-form">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="floatingNombredeudor"
-                placeholder="Nombre deudor"
-                disabled
-                [(ngModel)]="NameDeudor"
-              />
-              <label for="floatingNombredeudor">Nombre deudor</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input
+            <ion-input
+              class="mb-3"
+              type="text"
+              label="Nombre del deudor"
+              label-placement="floating"
+              fill="outline"
+              placeholder="Nombre deudor"
+              disabled
+              [(ngModel)]="NameDeudor"
+            >
+            </ion-input>
+            <div class="mb-3">
+              <ion-input
                 type="number"
-                class="form-control"
-                id="floatingCantidad"
+                label="Cantidad"
+                label-placement="floating"
+                fill="outline"
                 required
                 placeholder="Cantidad"
                 [(ngModel)]="quantity"
                 (ngModelChange)="onInputQuantityChange($event)"
               />
-              <label for="floatingCantidad">Cantidad</label>
               <div class="alertErrorForm" *ngIf="errorCantidad">
                 Este campo es requerido *
               </div>
             </div>
+            <div class="mb-3">
               <ion-item>
-                <ion-select label="Producto"  multiple="false" placeholder="Select Product" [(ngModel)]="selectProduct" (ngModelChange)="onInputProductChange($event)">
-                  <ion-select-option *ngFor="let item of listProducts" [value]="item.productID">{{item.name}}</ion-select-option>
+                <ion-select
+                  label="Producto"
+                  multiple="false"
+                  placeholder="Select Product"
+                  [(ngModel)]="selectProduct"
+                  (ngModelChange)="onInputProductChange($event)"
+                >
+                  <ion-select-option
+                    *ngFor="let item of listProducts"
+                    [value]="item.productID"
+                    >{{item.name}}</ion-select-option
+                  >
                 </ion-select>
               </ion-item>
-            <div class="alertErrorForm" *ngIf="errorSelect">
-              Este campo es requerido *
+              <div class="alertErrorForm" *ngIf="errorSelect">
+                Este campo es requerido *
+              </div>
+            </div>
+          </div>
+          <div class="content-pricetotal">
+            <div class="price">
+              <div>
+                Precio a pagar: {{(this.quantity || 0) * getPriceProduct() | currency:'$'}}
+              </div>
             </div>
           </div>
         </ion-content>
       </ng-template>
     </ion-modal>
-  
+
     <ion-toast
       [isOpen]="isToastOpen"
       [message]="messageToast"
       [duration]="5000"
       (didDismiss)="setOpen(false)"
     ></ion-toast>
-  
+
     <ion-modal id="modal-abono" [isOpen]="isOpenModalAbono">
       <ng-template>
         <ion-header>
-          <ion-toolbar color="success" style="padding-left: 20px;">
+          <ion-toolbar color="success" style="padding-left: 20px">
             <ion-title>Abono</ion-title>
           </ion-toolbar>
         </ion-header>
-          <div class="ion-padding">
-            <form>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="floatingNombredeldeudor" disabled placeholder="Nombre del deudor" [(ngModel)]="NameDeudor" [ngModelOptions]="{standalone: true}">
-                <label for="floatingNombredeldeudor">Nombre del deudor</label>
-              </div>
-              <div class="form-floating">
-                <input type="number" class="form-control" id="floatingMontoadeudado" placeholder="Monto adeudado" [(ngModel)]="montoAdeudado" [ngModelOptions]="{standalone: true}">
-                <label for="floatingMontoadeudado">Monto adeudado</label>
-              </div>
-            </form>
-          </div>
-        <ion-footer [translucent]="true">
-          <ion-toolbar>
-            <ion-button color="success" fill="outline" slot="start" (click)="cancel_abono()">Cancelar</ion-button>
-            <ion-button color="success" (click)="confirm_abono()" [strong]="true">Confirmar</ion-button>
+        <div class="ion-padding">
+          <form>
+            <div class="mb-3">
+              <ion-input
+                label="Nombre del deudor"
+                labelPlacement="floating"
+                fill="outline"
+                type="text"
+                disabled
+                placeholder="Nombre del deudor"
+                [(ngModel)]="NameDeudor"
+                [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+            <div>
+              <ion-input
+                label="Monto adeudado"
+                labelPlacement="floating"
+                fill="outline"
+                type="number"
+                placeholder="Monto adeudado"
+                [(ngModel)]="montoAdeudado"
+                [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </form>
+        </div>
+        <ion-footer [translucent]="true" style="text-align: center;">
+          <ion-toolbar >
+            <ion-button
+              color="success"
+              fill="outline"
+              slot="start"
+              (click)="cancel_abono()"
+              >Cancelar</ion-button
+            >
+            <ion-button
+              color="success"
+              (click)="confirm_abono()"
+              [strong]="true"
+              >Confirmar</ion-button
+            >
           </ion-toolbar>
         </ion-footer>
       </ng-template>
     </ion-modal>
-  
   </ion-content>
   <ion-footer [translucent]="true">
     <ion-toolbar>
-        <ion-title>Total Abonado: ${{dataUser.amountPaid}}</ion-title>
-        <hr style="margin: 0;">
-        <ion-title>Total Deuda: ${{dataUser.debt}}</ion-title>
+      <ion-title>Total Abonado: ${{dataUser.amountPaid}}</ion-title>
+      <hr style="margin: 0" />
+      <ion-title>Total Deuda: ${{dataUser.debt}}</ion-title>
     </ion-toolbar>
   </ion-footer>
 </ng-container>

@@ -92,73 +92,56 @@
             <ion-title>Nuevo Cliente</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding content-form-product">
-          <form [formGroup]="filterDebts" (ngSubmit)="onSubmit()">
-            <div class="content-inputs">
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingInput"
-                  required
-                  formControlName="Name"
-                  placeholder="Nombre del cliente"
-                />
-                <label for="floatingInput">Nombre del cliente *</label>
-                <div
-                  *ngIf="filterDebts.get('Name').invalid && filterDebts.get('Name').touched"
-                  class="alertErrorForm"
-                >
-                  <div *ngIf="filterDebts.get('Name').errors['required']">
-                    El nombre del cliente es requerido.
+        <ion-content>
+          <div class="ion-padding content-form-product">
+            <form [formGroup]="filterDebts" (ngSubmit)="onSubmit()">
+              <div class="content-inputs">
+                <div class="mb-3">
+                  <ion-input
+                    label="Nombre del cliente" 
+                    label-placement="floating" 
+                    fill="outline"
+                    type="text"
+                    required
+                    formControlName="Name"
+                    placeholder="Nombre del cliente"
+                  />
+                  <div
+                    *ngIf="filterDebts.get('Name').invalid && filterDebts.get('Name').touched"
+                    class="alertErrorForm"
+                  >
+                    <div *ngIf="filterDebts.get('Name').errors['required']">
+                      El nombre del cliente es requerido.
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingPhone"
-                  formControlName="Phone"
-                  placeholder="Telefono"
-                />
-                <label for="floatingPhone">Telefono</label>
-              </div>
-              <!-- <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingDebt"
-                  required
-                  formControlName="Debt"
-                  placeholder="Deuda"
-                />
-                <label for="floatingDebt">Deuda *</label>
-                <div
-                  *ngIf="filterDebts.get('Debt').invalid && filterDebts.get('Debt').touched"
-                  class="alertErrorForm"
-                >
-                  <div *ngIf="filterDebts.get('Debt').errors['required']">
-                    El valor de la deuda es requerida.
-                  </div>
+                <div class="mb-3">
+                  <ion-input
+                    label="Telefono"
+                    label-placement="floating"
+                    fill="outline"
+                    type="text"
+                    formControlName="Phone"
+                    placeholder="Telefono"
+                  />
                 </div>
-              </div> -->
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingDetail"
-                  formControlName="Detail"
-                  placeholder="Detalle"
-                />
-                <label for="floatingDetail">Detalle</label>
+                <div class="mb-3">
+                  <ion-input
+                    label="Detalle"
+                    label-placement="floating"
+                    fill="outline"
+                    type="text"
+                    formControlName="Detail"
+                    placeholder="Detalle"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="buttons-form">
-              <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
-              <ion-button color="success" type="submit">Confirmar</ion-button>
-            </div>
-          </form>
+              <div class="buttons-form">
+                <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
+                <ion-button color="success" type="submit">Confirmar</ion-button>
+              </div>
+            </form>
+          </div>
         </ion-content>
       </ng-template>
     </ion-modal>

@@ -94,104 +94,106 @@
             <ion-title>Nuevo producto</ion-title>
           </ion-toolbar>
         </ion-header>
-        <ion-content class="ion-padding content-form-product">
-          <form [formGroup]="filterProduct" (ngSubmit)="onSubmit()">
-            <div class="content-inputs">
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="floatingInput"
-                  required
-                  formControlName="Name"
-                  placeholder="Nombre del producto"
-                />
-                <label for="floatingInput">Nombre del producto *</label>
-                <div
-                  *ngIf="filterProduct.get('Name').invalid && filterProduct.get('Name').touched"
-                  class="alertErrorForm"
-                >
-                  <div *ngIf="filterProduct.get('Name').errors['required']">
-                    El nombre del producto es requerido.
-                  </div>
-                </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingQuantity"
-                  required
-                  formControlName="Quantity"
-                  placeholder="Cantidad Total"
-                />
-                <label for="floatingQuantity">Cantidad Total *</label>
-                <div
-                  *ngIf="filterProduct.get('Quantity').invalid && filterProduct.get('Quantity').touched"
-                  class="alertErrorForm"
-                >
-                  <div *ngIf="filterProduct.get('Quantity').errors['required']">
-                    La cantidad total es requerida.
-                  </div>
-                  <div *ngIf="filterProduct.get('Quantity').errors['min']">
-                    La cantidad total debe ser mayor o igual a 1.
-                  </div>
-                </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingMoneyInvested"
-                  required
-                  formControlName="MoneyInvested"
-                  placeholder="Dinero invertido"
-                />
-                <label for="floatingMoneyInvested">Dinero invertido *</label>
-                <div
-                  *ngIf="filterProduct.get('MoneyInvested').invalid && filterProduct.get('MoneyInvested').touched"
-                  class="alertErrorForm"
-                >
+        <ion-content>
+          <div class="ion-padding content-form-product">
+            <form [formGroup]="filterProduct" (ngSubmit)="onSubmit()">
+              <div class="content-inputs">
+                <div class="mb-3">
+                  <ion-input
+                    label="Nombre del producto *"
+                    labelPlacement="floating"
+                    fill="outline"
+                    type="text"
+                    required
+                    formControlName="Name"
+                    placeholder="Nombre del producto"
+                  />
                   <div
-                    *ngIf="filterProduct.get('MoneyInvested').errors['required']"
+                    *ngIf="filterProduct.get('Name').invalid && filterProduct.get('Name').touched"
+                    class="alertErrorForm"
                   >
-                    El dinero invertido es requerido.
-                  </div>
-                  <div *ngIf="filterProduct.get('MoneyInvested').errors['min']">
-                    El dinero invertido no puede ser 0
+                    <div *ngIf="filterProduct.get('Name').errors['required']">
+                      El nombre del producto es requerido.
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  class="form-control"
-                  id="floatingUnitPrice"
-                  required
-                  formControlName="UnitPrice"
-                  placeholder="Precio unidad"
-                />
-                <label for="floatingUnitPrice">Precio unidad *</label>
-                <div
-                  *ngIf="filterProduct.get('UnitPrice').invalid && filterProduct.get('UnitPrice').touched"
-                  class="alertErrorForm"
-                >
+                <div class="mb-3">
+                  <ion-input
+                    label="Cantidad Total *"
+                    labelPlacement="floating"
+                    fill="outline"
+                    type="number"
+                    required
+                    formControlName="Quantity"
+                    placeholder="Cantidad Total"
+                  />
                   <div
-                    *ngIf="filterProduct.get('UnitPrice').errors['required']"
+                    *ngIf="filterProduct.get('Quantity').invalid && filterProduct.get('Quantity').touched"
+                    class="alertErrorForm"
                   >
-                    El precio unidad es requerido.
+                    <div *ngIf="filterProduct.get('Quantity').errors['required']">
+                      La cantidad total es requerida.
+                    </div>
+                    <div *ngIf="filterProduct.get('Quantity').errors['min']">
+                      La cantidad total debe ser mayor o igual a 1.
+                    </div>
                   </div>
-                  <div *ngIf="filterProduct.get('UnitPrice').errors['min']">
-                    El precio por unidad no puede ser 0
+                </div>
+                <div class="mb-3">
+                  <ion-input
+                    label="Dinero invertido *"
+                    labelPlacement="floating"
+                    fill="outline"
+                    type="number"
+                    required
+                    formControlName="MoneyInvested"
+                    placeholder="Dinero invertido"
+                  />
+                  <div
+                    *ngIf="filterProduct.get('MoneyInvested').invalid && filterProduct.get('MoneyInvested').touched"
+                    class="alertErrorForm"
+                  >
+                    <div
+                      *ngIf="filterProduct.get('MoneyInvested').errors['required']"
+                    >
+                      El dinero invertido es requerido.
+                    </div>
+                    <div *ngIf="filterProduct.get('MoneyInvested').errors['min']">
+                      El dinero invertido no puede ser 0
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <ion-input
+                    label="Precio unidad *"
+                    labelPlacement="floating"
+                    fill="outline"
+                    type="number"
+                    required
+                    formControlName="UnitPrice"
+                    placeholder="Precio unidad"
+                  />
+                  <div
+                    *ngIf="filterProduct.get('UnitPrice').invalid && filterProduct.get('UnitPrice').touched"
+                    class="alertErrorForm"
+                  >
+                    <div
+                      *ngIf="filterProduct.get('UnitPrice').errors['required']"
+                    >
+                      El precio unidad es requerido.
+                    </div>
+                    <div *ngIf="filterProduct.get('UnitPrice').errors['min']">
+                      El precio por unidad no puede ser 0
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="buttons-form">
-              <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
-              <ion-button color="success" type="submit">Confirmar</ion-button>
-            </div>
-          </form>
+              <div class="buttons-form">
+                <ion-button color="success" fill="outline" (click)="close()">Cerrar</ion-button>
+                <ion-button color="success" type="submit">Confirmar</ion-button>
+              </div>
+            </form>
+          </div>
         </ion-content>
       </ng-template>
     </ion-modal>
