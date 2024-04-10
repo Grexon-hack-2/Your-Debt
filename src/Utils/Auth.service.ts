@@ -15,7 +15,7 @@ export class AuthService extends ComponentStore<AuthorizationResponse> {
   { 
     super({} as AuthorizationResponse);
 
-    const isAuth = _persistense$.get(this.KEYSESSION);
+    const isAuth = _persistense$.get(this.KEYSESSION) as AuthorizationResponse;
     if(isAuth){
       this.setAuth(isAuth);
     }

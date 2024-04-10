@@ -15,7 +15,7 @@ export class PersistenceService {
     localStorage.setItem(_key, _value);
   }
 
-  get(key: string): AuthorizationResponse {
+  get(key: string): AuthorizationResponse | string {
     const _key = key;
     const valueEncript = localStorage.getItem(_key);
     if (valueEncript === '' || typeof valueEncript !== 'string') {
