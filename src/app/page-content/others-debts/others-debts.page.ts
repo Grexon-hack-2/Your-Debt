@@ -1,20 +1,90 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
+import { InitialService } from '../initial.service';
+import { OtherDebtsRequest, OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
+import { ToastService } from 'src/Utils/ToastService';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IonModal } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-others-debts',
   templateUrl: './others-debts.page.html',
   styleUrls: ['./others-debts.page.scss'],
   standalone: true,
-  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule]
+  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class OthersDebtsPage implements OnInit {
+export class OthersDebtsPage {
+  public formOtherDebt: FormGroup;
+  public isOpen:boolean = false;
+  public listOtherDebts: OtherDebtsResponse[] = [];
+  public listNameDebt : string[] = [];
+  public listDebts: listDebt[] = [];
 
-  constructor() { }
+  @ViewChild(IonModal) modal: IonModal;
 
-  ngOnInit() {
+  constructor(
+    private _service$: InitialService, 
+    private _formBuilder: FormBuilder,
+    private _toastService: ToastService
+  ) { }
+
+  ionViewWillEnter(){
+    this._service$.getAllOtherDebts().subscribe((resp:OtherDebtsResponse[]) => {
+      this.listOtherDebts = resp;
+      
+    });
+
+    this._service$.getAllDebts().subscribe((resp: listDebt[]) => {
+      this.listDebts = resp;
+    })
+
+    this.formOtherDebt = this._formBuilder.group({
+      nameDebt: ['', Validators.required],
+      debtorsID: ['', Validators.required],
+      money: ["", Validators.required]
+    })
+  }
+
+  onWillDismiss(event: Event): void {
+    this.isOpen = false;
+  }
+
+  onClick(id: string) {
+    this.listNameDebt = this.getNamesDebt(id);
+    this.isOpen = !this.isOpen;
+  }
+
+  getNamesDebt(id: string): string[]{
+    return this.listOtherDebts.find(x => x.debtorsID == id)?.nameDebt.split(',');
+  }
+
+  onSubmit(){
+    const { nameDebt, debtorsID, money } = this.formOtherDebt.value;
+
+    const dataDebtor = debtorsID as listDebt;
+
+    const otherDebt:OtherDebtsRequest = {
+      nameDebt,
+      debt: money,
+      debtorsID: dataDebtor.debtorsID,
+      debtorName: dataDebtor.name
+    }
+
+    this._service$.insertNewDebt(otherDebt).subscribe((resp:string) => {
+      this._toastService.presentToast(resp,'rocket', 'success');
+      this.modal.dismiss(null, 'confirm');
+      this.resetForm();
+      this.ionViewWillEnter();
+    },
+    ({ error }: HttpErrorResponse) => {
+      this._toastService.presentToast(error, 'close-circle', 'danger');
+    }); 
+  }
+
+  resetForm(){
+    this.formOtherDebt.reset();
   }
 
 }

@@ -80,10 +80,7 @@ export class InitialAppPage implements OnInit {
     this._auth.getDataUser.subscribe(
       (resp: UserData) => (this.nameUser = resp.PersonName)
     );
-    this.initData();
-  }
 
-  ionViewWillEnter() {
     let colorThemeInitial = this._persistence.get(this.keyThemeColor);
     let prefersDark: MediaQueryList;
 
@@ -104,6 +101,11 @@ export class InitialAppPage implements OnInit {
     prefersDark.addEventListener('change', (mediaQuery) =>
       this.initializeDarkTheme(mediaQuery.matches)
     );
+
+    this.initData();
+  }
+
+  ionViewWillEnter() {
     this.initData();
   }
 
