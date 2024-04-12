@@ -1,14 +1,108 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="success">
     <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>OTRAS DEUDAS</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-text>
-    <h5>Nos encontramos trabajando en este componente</h5>
-  </ion-text>
+  <ion-grid class="content-list">
+    @for (item of listOtherDebts; track $index) {
+    <ion-row button class="item-list" (click)="onClick(item.debtorsID)">
+      <ion-col class="content-avatar">
+        <ion-avatar>
+          <img
+            alt="Silhouette of a person's head"
+            src="https://ionicframework.com/docs/img/demos/avatar.svg"
+          />
+        </ion-avatar>
+      </ion-col>
+      <ion-col>
+        <div class="content-info">
+          <ion-title>{{item.debtorName}}</ion-title>
+          <ion-text> {{item.audit_CreatedOnDate | date}} </ion-text>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="content-debt">{{item.debt | currency:'$'}}</div>
+      </ion-col>
+    </ion-row>
+    <hr style="margin: 0" />
+    }
+  </ion-grid>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-button id="modal-add-debt" expand="block" fill="outline" shape="round">
+      AGREGAR DEUDA
+    </ion-button>
+  </ion-fab>
+
+  <ion-modal id="modal-add-debt" #modal trigger="modal-add-debt" (willDismiss)="resetForm()">
+    <ng-template>
+      <ion-header [translucent]="true">
+        <ion-toolbar color="success">
+          <ion-title>Agregar deuda</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <form [formGroup]="formOtherDebt" (submit)="onSubmit()"  style="padding: 5px">
+        <ion-input
+          type="text"
+          aria-label="Success input"
+          color="success"
+          placeholder="Nombre de la deuda"
+          formControlName="nameDebt"
+        ></ion-input>
+        <br />
+        <ion-input
+          type="number"
+          aria-label="Success input"
+          color="success"
+          placeholder="Dinero adeudado"
+          formControlName="money"
+        ></ion-input>
+        <br />
+        <ion-select
+          aria-label="Success input"
+          color="success"
+          interface="popover"
+          placeholder="Nombre del deudor"
+          formControlName="debtorsID"
+        >
+        @for (item of listDebts; track $index) 
+        {
+          <ion-select-option [value]="item">{{item.name}}</ion-select-option>
+        }
+        </ion-select>
+        <br>
+        <ion-buttons class="ion-justify-content-around">
+          <ion-button (click)="this.modal.dismiss()" slot="start" expand="block" fill="outline" shape="round" color="success">
+            Cancelar
+          </ion-button>
+          <ion-button type="submit" [disabled]="formOtherDebt.invalid"  fill="solid" slot="end" expand="block" shape="round" color="success">
+            Agregar
+          </ion-button>
+        </ion-buttons>
+      </form>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal
+    id="debts-modal"
+    [isOpen]="isOpen"
+    (willDismiss)="onWillDismiss($event)"
+  >
+    <ng-template>
+      <div class="wrapper">
+        <h4>Nombre de las deudas</h4>
+        <ion-list lines="none">
+          @for (item of listNameDebt; track $index) {
+          <ion-item button="true" detail="false">
+            <ion-label>{{item}}</ion-label>
+          </ion-item>
+          }
+        </ion-list>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>

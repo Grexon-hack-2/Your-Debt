@@ -10,6 +10,7 @@ import { abono, deudaModel } from 'src/Models/deudaModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
 import { IonModal } from "@ionic/angular/standalone";
+import { OtherDebtsResponse } from 'src/Models/listDebtsModel';
 
 @Component({
   selector: 'app-detalle-deudor',
@@ -60,14 +61,33 @@ export class DetalleDeudorPage {
       this.dataUser = resp;
       this.NameDeudor = this.dataUser.name;
       this.showDetail = true;
-    })
+
+      this.service$.getDataOtherDebtById(id).subscribe((resp: OtherDebtsResponse) => {
+        if(resp){
+          const dataOtherDebt: deudaModel = {
+            debtsID : "",
+            debtorsID: resp.debtorsID,
+            productID: "Otras deudas",
+            quantity: resp.nameDebt.split(',').length,
+            totalAccount: resp.debt,
+            dateOfPurchase: resp.audit_CreatedOnDate
+          }
+
+          if(this.dataUser.listaDeudas !== null)
+            this.dataUser.listaDeudas.push(dataOtherDebt)
+          else
+          this.dataUser.listaDeudas = [dataOtherDebt]
+        }
+      });
+    });
+
     this.service$.getAllProducts().subscribe( (products:Product[])=>{
       this.listProducts = products;
     })
   }
 
   getNameProduct(id: string): string{
-    return this.listProducts.find((item) => item.productID === id)?.name
+    return this.listProducts.find((item) => item.productID === id)?.name || id;
   }
 
   getPriceProduct(): number{
