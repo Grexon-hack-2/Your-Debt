@@ -25,3 +25,16 @@ margin: 20px 20px 10px 20px;
 ion-modal#debts-modal .wrapper {
 margin-bottom: 10px;
 }
+
+.not-found, .without-debtors {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    font-family: cursive;
+    text-decoration: underline;
+    img{
+        width: 150px;
+    }
+}

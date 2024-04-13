@@ -15,7 +15,7 @@ import { InitialService } from '../initial.service';
 import { Product } from 'src/Models/productModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
-import { IonModal } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-productos',
@@ -29,8 +29,10 @@ export class ProductosPage {
   public submitted = false;
   public isOpenModal: boolean = false;
   @ViewChild(IonModal) modal: IonModal;
+  @ViewChild(IonSearchbar) search: IonSearchbar;
   public viewPage: boolean = false;
   public listProducts: Product[] = [];
+  public listResultFilter: Product[] = [];
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
   public presentingElement: Element | null = null;
@@ -58,6 +60,7 @@ export class ProductosPage {
   initialData() {
     this.service$.getAllProducts().subscribe((item: Product[]) => {
       this.listProducts = item;
+      this.listResultFilter = [...this.listProducts];
       this.viewPage = true;
     });
     this.buildFilterValidations();
@@ -109,13 +112,13 @@ export class ProductosPage {
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.listProducts.length / this.itemsPerPage);
+    return Math.ceil(this.listResultFilter.length / this.itemsPerPage);
   }
 
   getPageItems(): Product[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.listProducts.slice(startIndex, endIndex);
+    return this.listResultFilter.slice(startIndex, endIndex);
   }
 
   goToPage(page: number): void {
@@ -212,5 +215,15 @@ export class ProductosPage {
       (error) => {
         this._toastService.presentToast(error, 'close-circle', 'danger');
       })
+  }
+
+  handlerInput(event) {
+    const query = event.target.value.toLocaleLowerCase();
+    this.listResultFilter = this.listProducts.filter((item) => item.name.toLocaleLowerCase().indexOf(query) > -1)
+
+  }
+
+  ionViewWillLeave(){
+    this.search.value = "";
   }
 }

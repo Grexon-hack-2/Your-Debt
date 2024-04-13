@@ -7,22 +7,25 @@ import { listDebt } from 'src/Models/listDebtsModel';
 import { RouterLink } from '@angular/router';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
-import { IonModal } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar, IonListHeader } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-deudores',
   templateUrl: './deudores.page.html',
   styleUrls: ['./deudores.page.scss'],
   standalone: true,
-  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
+  imports: [IonListHeader, ...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
 })
 export class DeudoresPage  {
   public filterDebts: FormGroup = new FormGroup({});
   public submitted = false;
   public isOpenModal: boolean = false;
   @ViewChild(IonModal) modal: IonModal;
+  @ViewChild(IonSearchbar) searchBar: IonSearchbar;
+
   public viewPage: boolean = false;
   public listDebts:listDebt[] = [];
+  public listResultFilter: listDebt[] = [];
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
   public presentingElement: Element | null = null;
@@ -52,6 +55,7 @@ export class DeudoresPage  {
   initData(): void {
     this.service$.getAllDebts().subscribe(data => {
       this.listDebts = data;
+      this.listResultFilter = [...this.listDebts]
       this.viewPage = true;
     })
   }
@@ -103,13 +107,13 @@ export class DeudoresPage  {
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.listDebts.length / this.itemsPerPage);
+    return Math.ceil(this.listResultFilter.length / this.itemsPerPage);
   }
 
   getPageItems(): listDebt[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    return this.listDebts.slice(startIndex, endIndex);
+    return this.listResultFilter.slice(startIndex, endIndex);
   }
 
   goToPage(page: number): void {
@@ -193,5 +197,14 @@ export class DeudoresPage  {
 
     return role === 'confirm';
   };
+
+  handlerInput(event):void{
+    const query = event.target.value.toLowerCase();
+    this.listResultFilter = this.listDebts.filter((item) => item.name.toLocaleLowerCase().indexOf(query) > -1);
+  }
+
+  ionViewWillLeave(){
+    this.searchBar.value = "";
+  }
 
 }

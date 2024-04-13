@@ -36,7 +36,11 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonCardContent
+    IonCardContent,
+    IonSearchbar,
+    IonSkeletonText,
+    IonListHeader,
+    IonThumbnail
    } from "@ionic/angular/standalone";
 
 export class InterfaceIonic {
@@ -78,6 +82,10 @@ export class InterfaceIonic {
         IonCardHeader,
         IonCardTitle,
         IonCardSubtitle,
-        IonCardContent
+        IonCardContent,
+        IonSearchbar,
+        IonSkeletonText,
+        IonListHeader,
+        IonThumbnail
     ]
 }
