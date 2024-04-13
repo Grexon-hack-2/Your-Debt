@@ -6,7 +6,7 @@ import { InitialService } from '../initial.service';
 import { OtherDebtsRequest, OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IonModal } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-others-debts',
@@ -16,13 +16,16 @@ import { IonModal } from "@ionic/angular/standalone";
   imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class OthersDebtsPage {
+  public showPage: boolean = false;
   public formOtherDebt: FormGroup;
   public isOpen:boolean = false;
   public listOtherDebts: OtherDebtsResponse[] = [];
+  public listResultFilter: OtherDebtsResponse[] = [];
   public listNameDebt : string[] = [];
   public listDebts: listDebt[] = [];
 
   @ViewChild(IonModal) modal: IonModal;
+  @ViewChild(IonSearchbar) search: IonSearchbar;
 
   constructor(
     private _service$: InitialService, 
@@ -33,18 +36,23 @@ export class OthersDebtsPage {
   ionViewWillEnter(){
     this._service$.getAllOtherDebts().subscribe((resp:OtherDebtsResponse[]) => {
       this.listOtherDebts = resp;
-      
+      this.listResultFilter = [...this.listOtherDebts];
+
+      this._service$.getAllDebts().subscribe((resp: listDebt[]) => {
+        this.listDebts = resp;
+
+        this.showPage = true;
+
+        this.formOtherDebt = this._formBuilder.group({
+          nameDebt: ['', Validators.required],
+          debtorsID: ['', [Validators.required]],
+          money: ["", Validators.required]
+        })
+    
+        if(this.listDebts.length === 0) this.formOtherDebt.controls['debtorsID'].disable();
+      })
     });
 
-    this._service$.getAllDebts().subscribe((resp: listDebt[]) => {
-      this.listDebts = resp;
-    })
-
-    this.formOtherDebt = this._formBuilder.group({
-      nameDebt: ['', Validators.required],
-      debtorsID: ['', Validators.required],
-      money: ["", Validators.required]
-    })
   }
 
   onWillDismiss(event: Event): void {
@@ -85,6 +93,16 @@ export class OthersDebtsPage {
 
   resetForm(){
     this.formOtherDebt.reset();
+  }
+
+  handlerInput(event){
+    const query = event.target.value.toLocaleLowerCase();
+    this.listResultFilter = this.listOtherDebts.filter(x => x.debtorName.toLocaleLowerCase().indexOf(query) > -1);
+
+  }
+
+  ionViewWillLeave(){
+    this.search.value = "";
   }
 
 }

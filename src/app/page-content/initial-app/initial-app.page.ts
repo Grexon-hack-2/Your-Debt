@@ -25,6 +25,7 @@ import {
 import { InterfaceIonic } from '../../../Utils/ExpInterfaceIonic';
 import { IonPopover } from '@ionic/angular/standalone';
 import { PersistenceService } from 'src/Utils/Persistence.service';
+import { RouterLink } from '@angular/router';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -39,6 +40,7 @@ export type ChartOptions = {
   responsive: ApexResponsive[];
   labels: any;
   legend: ApexLegend;
+  colors: string[];
 };
 
 @Component({
@@ -51,6 +53,7 @@ export type ChartOptions = {
     CommonModule,
     FormsModule,
     NgApexchartsModule,
+    RouterLink
   ],
 })
 export class InitialAppPage implements OnInit {
@@ -69,6 +72,8 @@ export class InitialAppPage implements OnInit {
 
   public productData: Product;
   private readonly keyThemeColor: string = "color-Theme";
+  public iconMode: boolean = false;
+
   constructor(
     private session$: SessionService,
     private _auth: AuthService,
@@ -125,6 +130,7 @@ export class InitialAppPage implements OnInit {
 
   // Add or remove the "dark" class on the document body
   toggleDarkTheme(shouldAdd: boolean) {
+    this.iconMode = shouldAdd;
     if(shouldAdd) this._persistence.save(this.keyThemeColor, "dark");
       else this._persistence.save(this.keyThemeColor, 'light')
     document.body.classList.toggle('dark', shouldAdd);
@@ -142,10 +148,20 @@ export class InitialAppPage implements OnInit {
       this.chartOptionsBar = {
         series: [
           {
-            name: 'My-series',
-            data: item.map(
-              (x) => x.unitPrice * x.quantityPurchased - x.moneyInvested
-            ),
+            name: 'Ganancia',
+            data: item.map((x)=> {
+              return {
+                x: x.name,
+                y: x.unitPrice * x.quantityPurchased - x.moneyInvested,
+                goals: [
+                  {
+                    name: 'Vendido',
+                    value: (x.unitPrice * (x.quantityPurchased - x.quantityInStock)) - x.moneyInvested,
+                    strokeColor: "#775DD0"
+                  }
+                ]
+              }
+            }),
           },
         ],
         chart: {

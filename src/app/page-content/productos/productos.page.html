@@ -9,8 +9,9 @@
   </ion-header>
 
   <ion-content class="ion-padding">
+    <ion-searchbar #search placeholder="Nombre del producto" (ionInput)="handlerInput($event)"></ion-searchbar>
     <table
-      class="table"
+      class="table table-hover"
       *ngIf="listProducts.length > 0;else withoutProduct"
     >
       <thead>
@@ -32,6 +33,10 @@
         }
       </tbody>
     </table>
+    <div *ngIf="listProducts.length > 0 && listResultFilter.length === 0" class="not-found">
+      <img src="../../../assets/no-results.png" alt="not result">
+      Producto no encontrado
+    </div>
     <ng-template #withoutProduct>
       <div class="contentFlex">
         <ion-card color="light" class="card-box">
@@ -49,7 +54,7 @@
       </div>
     </ng-template>
 
-    <nav aria-label="Page navigation" *ngIf="listProducts.length > 0">
+    <nav aria-label="Page navigation" *ngIf="listResultFilter.length > 0">
       <ul class="pagination">
         <li class="page-item" (click)="prevPage()">
           <a class="page-link" aria-label="Previous">
