@@ -40,7 +40,9 @@ import {
     IonSearchbar,
     IonSkeletonText,
     IonListHeader,
-    IonThumbnail
+    IonThumbnail,
+    IonSegment,
+    IonSegmentButton
    } from "@ionic/angular/standalone";
 
 export class InterfaceIonic {
@@ -86,6 +88,8 @@ export class InterfaceIonic {
         IonSearchbar,
         IonSkeletonText,
         IonListHeader,
-        IonThumbnail
+        IonThumbnail,
+        IonSegment,
+        IonSegmentButton
     ]
 }

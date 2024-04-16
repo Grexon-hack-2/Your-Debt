@@ -5,6 +5,7 @@ export interface listDebt {
     debt: number,
     audit_CreatedOnDate: Date,
     detail: string
+    amountPaid?: number
 }
 
 export interface OtherDebtsRequest {

@@ -8,8 +8,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-text>
-    <h5>Nos encontramos trabajando en este componente</h5>
-    <p>tranquila señora, ya se lo hago</p>
-  </ion-text>
+  <ion-segment color="secondary" value="ganancias" [(ngModel)]="selectedSeg">
+    <ion-segment-button value="ganancias">
+      <ion-label [style.color]="selectedSeg !== 'ganancias' ? 'darkgray' : 'var(--ion-color-secondary)'">Ganancias</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="detalle">
+      <ion-label [style.color]="selectedSeg !== 'detalle' ? 'darkgray': 'var(--ion-color-secondary)'">Detalle anual</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="selectedSeg">
+    <div *ngSwitchCase="'ganancias'">
+      <app-ganancias [products]="products" [otherDebts]="otherDebts" [debtors]="debtors"></app-ganancias>
+    </div>
+    <div *ngSwitchCase="'detalle'">
+      <app-detail-year></app-detail-year>
+    </div>
+    <div *ngSwitchDefault>
+      output2
+    </div>
+  </div>
 </ion-content>
