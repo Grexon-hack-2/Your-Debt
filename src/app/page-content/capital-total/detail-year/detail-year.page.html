@@ -1,3 +1,13 @@
-<div>
-  Componente en desarrollo
+<div id="content-module-detail" class="ion-padding">
+  <h4>VENTAS E INVERSIONES ANUALES</h4>
+  <div id="chart">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [dataLabels]="chartOptions.dataLabels"
+    ></apx-chart>
+  </div>
 </div>

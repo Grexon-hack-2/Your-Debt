@@ -55,3 +55,17 @@ ion-item {
 .md ion-footer ion-title{
     padding-left: 10px;
 }
+
+.action-sheet-container .sc-ion-action-sheet-md {
+    button {
+        color: var(--ion-text-color) !important;
+    }
+}
+
+.action-sheet-title.sc-ion-action-sheet-md {
+    color: var(--ion-text-color);
+}
+
+.action-sheet-group.sc-ion-action-sheet-md {
+    border-bottom: .2px solid;
+}

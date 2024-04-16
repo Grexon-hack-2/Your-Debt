@@ -18,6 +18,10 @@ export interface History_Abono {
     audit_CreatedOnDate: Date;
 }
 
+export interface DataByMonth<T> {
+    [month: string]: T[];
+  }
+
 export interface History_Product {
     h_ProductID: string;
     userAdminID: string;
