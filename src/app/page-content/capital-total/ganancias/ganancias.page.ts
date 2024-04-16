@@ -8,6 +8,7 @@ import { OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexNonAxisChartSeries, ApexPlotOptions, ApexResponsive, ApexTitleSubtitle, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
 import { RouterLink } from '@angular/router';
+import { History_OtherDebt } from 'src/Models/historiesInterfaces';
 
 
 export type ChartOptions = {
@@ -48,6 +49,8 @@ export class GananciasPage {
   public totalCobrado: number = 0;
   public fiadoTotal: number = 0;
 
+  public History_OtherDebt: History_OtherDebt[]=[];
+
   @Input('products') set dataProduct(products: Product[]){
     this.totalInvested = products?.reduce((prev, curr) => prev += curr.moneyInvested, 0);
     this.totalDebts = products?.reduce((prev, curr) => prev += ((curr.quantityPurchased - curr.quantityInStock) * curr.unitPrice) ,0);
@@ -68,6 +71,10 @@ export class GananciasPage {
   @Input('debtors') set dataDebtors(debtors: listDebt[]){
     this.fiadoTotal = debtors?.reduce((acum,curr) => acum + curr.debt ,0)
     this.totalCobrado = debtors?.reduce((prev, curr) => prev + curr.amountPaid ,0)
+  }
+
+  @Input('historyOtherDebts') set dataHistory(historyOtherDebts: History_OtherDebt[]){
+    this.History_OtherDebt = historyOtherDebts ?? [];
   }
 
   constructor(private service$: InitialService) { }
@@ -109,16 +116,19 @@ export class GananciasPage {
 
   getNameSelect(otherDebts: OtherDebtsResponse[]){
     for (const debt of otherDebts) {
-      let name = debt.nameDebt.toLocaleLowerCase();
-        if (!this.selectNameOtherDebts.includes(name)) {
-          this.selectNameOtherDebts.push(name);
+      let name = debt.nameDebt.toLocaleLowerCase().trim().split(',');
+
+      name.forEach(element => {
+        if (!this.selectNameOtherDebts.includes(element)) {
+          this.selectNameOtherDebts.push(element);
         }
+      });
     }
   }
 
   handlerSelect(event: CustomEvent){
-    const objetosFiltrados:OtherDebtsResponse[]  = this.listOtherDebts.reduce((acumulador, objeto) => {
-      if (objeto.nameDebt.toLocaleLowerCase() === event.detail.value) {
+    const objetosFiltrados:OtherDebtsResponse[]  = this.History_OtherDebt.reduce((acumulador, objeto) => {
+      if (objeto.nameDebt.toLocaleLowerCase() === event.detail.value && objeto.status === 'Deuda') {
           acumulador.push(objeto);
       }
       return acumulador;
