@@ -127,8 +127,9 @@ export class GananciasPage {
   }
 
   handlerSelect(event: CustomEvent){
+    let value: string = event.detail.value;
     const objetosFiltrados:OtherDebtsResponse[]  = this.History_OtherDebt.reduce((acumulador, objeto) => {
-      if (objeto.nameDebt.toLocaleLowerCase() === event.detail.value && objeto.status === 'Deuda') {
+      if (objeto.nameDebt.toLocaleLowerCase().trim() === value.toLocaleLowerCase() && objeto.status === 'Deuda') {
           acumulador.push(objeto);
       }
       return acumulador;
