@@ -18,7 +18,7 @@
   </ion-segment>
   <div [ngSwitch]="selectedSeg">
     <div *ngSwitchCase="'ganancias'">
-      <app-ganancias [products]="products" [otherDebts]="otherDebts" [debtors]="debtors"></app-ganancias>
+      <app-ganancias [products]="products" [otherDebts]="otherDebts" [debtors]="debtors" [historyOtherDebts]="History_OtherDebt"></app-ganancias>
     </div>
     <div *ngSwitchCase="'detalle'">
       <app-detail-year></app-detail-year>
