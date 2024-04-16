@@ -21,7 +21,7 @@
       <app-ganancias [products]="products" [otherDebts]="otherDebts" [debtors]="debtors" [historyOtherDebts]="History_OtherDebt"></app-ganancias>
     </div>
     <div *ngSwitchCase="'detalle'">
-      <app-detail-year></app-detail-year>
+      <app-detail-year [productsByMonth]="History_Product" [abonoByMonth]="History_Abono"></app-detail-year>
     </div>
     <div *ngSwitchDefault>
       output2

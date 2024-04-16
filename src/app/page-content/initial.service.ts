@@ -5,7 +5,7 @@ import { deudaModel } from 'src/Models/deudaModel';
 import { OtherDebtsRequest, OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
 import { Product } from 'src/Models/productModel';
 import { Your_debts_httpService } from '../Services/your_debts_http.service';
-import { History_Abono, History_OtherDebt, History_Product } from 'src/Models/historiesInterfaces';
+import { DataByMonth, History_Abono, History_OtherDebt, History_Product } from 'src/Models/historiesInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -87,12 +87,12 @@ export class InitialService {
     return this.httpService$.getWithHeaders(url);
   }
 
-  getHistoryAbono():Observable<History_Abono[]>{
+  getHistoryAbono():Observable<DataByMonth<History_Abono>>{
     const url = "api/History/GetHistoryAbono";
     return this.httpService$.getWithHeaders(url);
   }
 
-  getHistoryProducts():Observable<History_Product[]>{
+  getHistoryProducts():Observable<DataByMonth<History_Product>>{
     const url = "api/History/GetHistoryProducts";
     return this.httpService$.getWithHeaders(url);
   }

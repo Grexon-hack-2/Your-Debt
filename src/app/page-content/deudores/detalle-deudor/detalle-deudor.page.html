@@ -22,7 +22,7 @@
         <div>Fecha: {{dataUser.audit_CreatedOnDate| date}}</div>
       </div>
     </div>
-    <div *ngIf="dataUser.detail !== ''">
+    <div *ngIf="dataUser.detail !== '' && dataUser.detail !== null">
       <h4>Detalle del deudor</h4>
       <p>{{dataUser.detail}}</p>
     </div>

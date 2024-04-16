@@ -1,4 +1,4 @@
-import { History_OtherDebt, History_Abono, History_Product } from './../../../Models/historiesInterfaces';
+import { History_OtherDebt, History_Abono, History_Product, DataByMonth } from './../../../Models/historiesInterfaces';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -31,8 +31,8 @@ export class CapitalTotalPage {
   public debtors: listDebt[];
 
   public History_OtherDebt: History_OtherDebt[];
-  public History_Abono: History_Abono[];
-  public History_Product: History_Product[];
+  public History_Abono: DataByMonth<History_Abono>;
+  public History_Product: DataByMonth<History_Product>;
 
 
   constructor(private service$: InitialService) {}
