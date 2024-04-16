@@ -99,7 +99,24 @@ export class DetalleDeudorPage {
   }
 
   async confirm(): Promise<void> {
-    if(!this.errorCantidad && !this.errorSelect && await this.canDismiss()) this.modal.dismiss(null,'confirm');
+    if(!this.errorCantidad && !this.errorSelect && await this.canDismissValidate()) this.modal.dismiss(null,'confirm');
+  }
+
+  validateAvailableQuantity(): boolean{
+    const product = this.listProducts.find((item) => item.productID === this.selectProduct);
+
+    const quantityAvailable = product.quantityInStock;
+
+    if((quantityAvailable < this.quantity)){
+      if(quantityAvailable === 0){
+        this._toastService.presentToast(`No quedan ${product.name} disponibles`, "close-circle", "danger")
+      }
+      else {
+        this._toastService.presentToast(`Solo quedan ${quantityAvailable} ${product.name} disponibles`, "close-circle", "warning")
+      }
+    }
+
+    return quantityAvailable >= this.quantity;
   }
 
   onWillDismiss(event: Event): void {
@@ -147,26 +164,52 @@ export class DetalleDeudorPage {
   }
 
   canDismiss = async (message: string = null) : Promise<boolean> => {
-    let text = message != null ? 'Estás segur@? ' + message : 'Estás segur@?'
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: text,
-      buttons: [
-        {
-          text: 'Si',
-          role: 'confirm',
-        },
-        {
-          text: 'No',
-          role: 'cancel',
-        },
-      ],
-    });
+      let text = message != null ? 'Estás segur@? ' + message : 'Estás segur@?'
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: text,
+        buttons: [
+          {
+            text: 'Si',
+            role: 'confirm',
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+          },
+        ],
+      });
+  
+      actionSheet.present();
+  
+      const { role } = await actionSheet.onWillDismiss();
+  
+      return role === 'confirm';
+  };
 
-    actionSheet.present();
-
-    const { role } = await actionSheet.onWillDismiss();
-
-    return role === 'confirm';
+  canDismissValidate = async (message: string = null) : Promise<boolean> => {
+    if(this.validateAvailableQuantity()) {
+      let text = message != null ? 'Estás segur@? ' + message : 'Estás segur@?'
+      const actionSheet = await this.actionSheetCtrl.create({
+        header: text,
+        buttons: [
+          {
+            text: 'Si',
+            role: 'confirm',
+          },
+          {
+            text: 'No',
+            role: 'cancel',
+          },
+        ],
+      });
+  
+      actionSheet.present();
+  
+      const { role } = await actionSheet.onWillDismiss();
+  
+      return role === 'confirm';
+    }
+    return false;
   };
 
   async onDeleteClient(): Promise<void> {

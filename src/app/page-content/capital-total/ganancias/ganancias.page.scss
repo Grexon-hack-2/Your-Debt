@@ -1,0 +1,69 @@
+.ganancias-de-productos .content-totales{
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 700;
+    gap: 10px;
+    text-align: center;
+    .content-plus {
+        text-wrap: nowrap;
+        flex-grow: 1;
+        flex-basis: min-content;
+        font-weight: 700;
+    }
+
+}
+
+.grafic {
+    background-color: #9d9b9b;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.ganancias-de-otras {
+    padding-top: 10px;
+    .content-totales {
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+        .total {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .total, .content-select-name {
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: min-content;
+
+            box-shadow: 0 0 2px grey;
+            border-radius: 8px;
+            padding: 5px;
+        }
+    }
+}
+
+.content-cobros {
+    padding-top: 10px;
+    .content-totals {
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+        div {
+            h6{
+                font-weight: 600;
+            }
+            flex-grow: 1;
+            box-shadow: 0 0 2px grey;
+            border-radius: 8px;
+            padding: 5px;
+        }
+    }
+}
+
+.without-product {
+    text-align: center;
+    img {
+        width: 150px;
+    }
+}

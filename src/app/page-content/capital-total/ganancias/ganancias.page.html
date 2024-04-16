@@ -1,0 +1,67 @@
+<div id="content-page-ganancias" class="ion-padding">
+  <div class="ganancias-de-productos">
+    <h4>PRODUCTO</h4>
+
+    <div class="content-totales">
+      <div class="content-plus">Total invertido: {{totalInvested}}</div>
+      <div class="content-plus">Total vendido: {{totalDebts}}</div>
+      <div class="content-plus">Ganancias hasta ahora: {{ganancias}}</div>
+    </div>
+    <div class="content-grafic-products" *ngIf="showGrafic">
+      <div class="grafic" *ngIf="totalInvested !== 0">
+        <apx-chart
+        [series]="chartOptionsBar.series"
+        [chart]="chartOptionsBar.chart"
+        [xaxis]="chartOptionsBar.xaxis"
+        [title]="chartOptionsBar.title"
+        [fill]="chartOptionsBar.fill"
+      ></apx-chart>
+      </div>
+      <div class="without-product" *ngIf="totalInvested === 0">
+        <img
+          src="../../../assets/no-results.png"
+          alt="icon flaticon not found"
+        />
+        <div>No tienes productos registrados</div>
+        <ion-text color="primary" [routerLink]="['/inicio/productos']" routerLinkActive="router-link-active" >Ir a productos</ion-text>
+      </div>
+    </div>
+  </div>
+  <div class="ganancias-de-otras">
+    <h4>OTRAS DEUDAS</h4>
+    <div class="content-totales">
+      <div class="total">
+        <h5>Total</h5>
+        {{totalOtherDebts | currency:'$'}}
+      </div>
+      <div class="content-select-name">
+        <ion-select
+          interface="popover"
+          (ionChange)="handlerSelect($event)"
+          placeholder="Nombre de la deuda"
+          [disabled]="selectNameOtherDebts.length === 0"
+        >
+          @for (item of selectNameOtherDebts; track $index) {
+          <ion-select-option [value]="item">{{item}}</ion-select-option>
+          }
+        </ion-select>
+        <hr style="margin: 0" />
+        <div>Total: {{totalOneDebt | currency:'$'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-cobros">
+    <h4>COBRANZAS</h4>
+    <div class="content-totals">
+      <div>
+        <h6>Fiado total</h6>
+        {{fiadoTotal | currency: '$'}}
+      </div>
+      <div>
+        <h6>Total cobrado</h6>
+        {{totalCobrado | currency: '$'}}
+      </div>
+    </div>
+  </div>
+</div>
