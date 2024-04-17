@@ -9,15 +9,15 @@ import { OverlayEventDetail } from '@ionic/core/components';
 import { abono, deudaModel } from 'src/Models/deudaModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
-import { IonModal } from "@ionic/angular/standalone";
+import { IonModal, IonLoading, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
 import { OtherDebtsResponse } from 'src/Models/listDebtsModel';
 
 @Component({
-  selector: 'app-detalle-deudor',
-  templateUrl: './detalle-deudor.page.html',
-  styleUrls: ['./detalle-deudor.page.scss'],
-  standalone: true,
-  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule]
+    selector: 'app-detalle-deudor',
+    templateUrl: './detalle-deudor.page.html',
+    styleUrls: ['./detalle-deudor.page.scss'],
+    standalone: true,
+    imports: [IonRefresherContent, IonRefresher, IonLoading, ...InterfaceIonic.ArrayInterface, CommonModule, FormsModule]
 })
 export class DetalleDeudorPage {
   @ViewChild(IonModal) modal: IonModal;
@@ -40,6 +40,8 @@ export class DetalleDeudorPage {
   public isOpenModalAbono:boolean = false;
   public nameDeudor:string;
   public montoAdeudado:number;
+
+  public showLoading: boolean = false;
 
   constructor(
     private service$: InitialService, 
@@ -206,7 +208,7 @@ export class DetalleDeudorPage {
       actionSheet.present();
   
       const { role } = await actionSheet.onWillDismiss();
-  
+      this.showLoading = true;
       return role === 'confirm';
     }
     return false;
@@ -215,6 +217,7 @@ export class DetalleDeudorPage {
   async onDeleteClient(): Promise<void> {
     let text = this.dataUser.debt > 0 ? `su deuda es de $${this.dataUser.debt}` : null;
     if(await this.canDismiss(text)) {
+      this.showLoading = true;
       this.service$.deleteClient(this.idClient).subscribe((resp: string)=>{
         this.messageToast = resp;
         this.setOpen(true);
@@ -239,7 +242,7 @@ export class DetalleDeudorPage {
   }
 
   confirm_abono() {
-      
+      this.showLoading = true;
       if(this.montoAdeudado === undefined || this.montoAdeudado === null || this.montoAdeudado === 0){
         this._toastService.presentToast("El monto adeudado no puede ser 0", "close-circle", "danger")
       }
@@ -274,6 +277,21 @@ export class DetalleDeudorPage {
 
   showWholesalePrice(): boolean{
     return this.quantity > 0 && (this.selectProduct !== null && this.selectProduct !== undefined);
+  }
+
+  outLoading(event: Event) {
+    this.showLoading = false;
+  }
+
+  refreshPage(event: boolean) {
+    this.ionViewWillEnter();
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
   }
 
 }

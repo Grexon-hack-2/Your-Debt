@@ -9,13 +9,14 @@ import { DetailYearPage } from "./detail-year/detail-year.page";
 import { Product } from 'src/Models/productModel';
 import { OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
 import { forkJoin } from 'rxjs';
+import { IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
 
 @Component({
     selector: 'app-capital-total',
     templateUrl: './capital-total.page.html',
     styleUrls: ['./capital-total.page.scss'],
     standalone: true,
-    imports: [
+    imports: [IonRefresherContent, IonRefresher, 
         ...InterfaceIonic.ArrayInterface,
         CommonModule,
         FormsModule,
@@ -61,5 +62,12 @@ export class CapitalTotalPage {
       this.History_Product = requestThree;
     });
       
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
   }
 }

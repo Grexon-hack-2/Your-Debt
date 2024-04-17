@@ -23,7 +23,7 @@ import {
 } from 'ng-apexcharts';
 
 import { InterfaceIonic } from '../../../Utils/ExpInterfaceIonic';
-import { IonPopover } from '@ionic/angular/standalone';
+import { IonPopover, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 import { PersistenceService } from 'src/Utils/Persistence.service';
 import { RouterLink } from '@angular/router';
 
@@ -48,7 +48,7 @@ export type ChartOptions = {
   templateUrl: './initial-app.page.html',
   styleUrls: ['./initial-app.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonRefresherContent, IonRefresher, 
     ...InterfaceIonic.ArrayInterface,
     CommonModule,
     FormsModule,
@@ -235,5 +235,12 @@ export class InitialAppPage implements OnInit {
         ],
       };
     }
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
   }
 }

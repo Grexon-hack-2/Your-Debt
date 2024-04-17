@@ -7,14 +7,14 @@ import { listDebt } from 'src/Models/listDebtsModel';
 import { RouterLink } from '@angular/router';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
-import { IonModal, IonSearchbar, IonListHeader } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar, IonListHeader, IonLoading, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
 
 @Component({
-  selector: 'app-deudores',
-  templateUrl: './deudores.page.html',
-  styleUrls: ['./deudores.page.scss'],
-  standalone: true,
-  imports: [IonListHeader, ...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
+    selector: 'app-deudores',
+    templateUrl: './deudores.page.html',
+    styleUrls: ['./deudores.page.scss'],
+    standalone: true,
+    imports: [IonRefresherContent, IonRefresher, IonLoading, IonListHeader, ...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule, RouterLink]
 })
 export class DeudoresPage  {
   public filterDebts: FormGroup = new FormGroup({});
@@ -29,6 +29,8 @@ export class DeudoresPage  {
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
   public presentingElement: Element | null = null;
+
+  public showLoading: boolean = false;
   
   constructor(
     private service$: InitialService,
@@ -83,7 +85,7 @@ export class DeudoresPage  {
     }
 
     let valueConfirm = await this.confirm();
-    
+    this.showLoading = true;
     if(valueConfirm){
       let value = this.filterDebts.value;
       this.filterDebts.reset();
@@ -205,6 +207,17 @@ export class DeudoresPage  {
 
   ionViewWillLeave(){
     this.searchBar.value = "";
+  }
+
+  outLoading(event: Event) {
+    this.showLoading = false;
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
   }
 
 }

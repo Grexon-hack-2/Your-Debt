@@ -15,14 +15,14 @@ import { InitialService } from '../initial.service';
 import { Product } from 'src/Models/productModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
-import { IonModal, IonSearchbar } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar, IonLoading, IonRefresher, IonRefresherContent } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.page.html',
   styleUrls: ['./productos.page.scss'],
   standalone: true,
-  imports: [...InterfaceIonic.ArrayInterface, CommonModule, ReactiveFormsModule],
+  imports: [IonRefresherContent, IonRefresher, IonLoading, ...InterfaceIonic.ArrayInterface, CommonModule, ReactiveFormsModule],
 })
 export class ProductosPage {
   public filterProduct: FormGroup = new FormGroup({});
@@ -36,6 +36,8 @@ export class ProductosPage {
   public currentPage: number = 1;
   public itemsPerPage: number = 10; // Número de ítems por página
   public presentingElement: Element | null = null;
+
+  public showLoading: boolean = false;
 
   constructor(
     private service$: InitialService,
@@ -88,7 +90,7 @@ export class ProductosPage {
     }
 
     let valueConfirm = await this.confirm();
-
+    this.showLoading = true;
     if (valueConfirm) {
       let value = this.filterProduct.value;
       this.filterProduct.reset();
@@ -204,6 +206,7 @@ export class ProductosPage {
   };
 
   deleteProduct(id: string) {
+      this.showLoading = true;
       this.service$.deleteProduct(id).subscribe((resp: string) => {
         this.initialData();
         this._toastService.presentToast(
@@ -226,4 +229,16 @@ export class ProductosPage {
   ionViewWillLeave(){
     this.search.value = "";
   }
+
+  outLoading(event: Event) {
+    this.showLoading = false;
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
+  }
+
 }
