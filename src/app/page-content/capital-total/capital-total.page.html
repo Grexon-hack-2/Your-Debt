@@ -7,7 +7,15 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-segment color="secondary" value="ganancias" [(ngModel)]="selectedSeg">
     <ion-segment-button value="ganancias">
       <ion-label [style.color]="selectedSeg !== 'ganancias' ? 'darkgray' : 'var(--ion-color-secondary)'">Ganancias</ion-label>

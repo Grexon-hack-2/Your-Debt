@@ -9,6 +9,14 @@
   </ion-header>
 
   <ion-content *ngIf="showDetail" class="ion-padding">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content
+        pullingIcon="chevron-down-circle-outline"
+        pullingText="Pull to refresh"
+        refreshingSpinner="circles"
+      >
+      </ion-refresher-content>
+    </ion-refresher>
     <div class="info-client">
       <ion-avatar>
         <img
@@ -183,11 +191,11 @@
             </div>
             <div>
               <ion-input
-                label="Monto adeudado"
+                label="Monto abonado"
                 labelPlacement="floating"
                 fill="outline"
                 type="number"
-                placeholder="Monto adeudado"
+                placeholder="Monto abonado"
                 [(ngModel)]="montoAdeudado"
                 [ngModelOptions]="{standalone: true}"
               />
@@ -213,6 +221,7 @@
         </ion-footer>
       </ng-template>
     </ion-modal>
+    <ion-loading [isOpen]="showLoading" message="Loading..." [duration]="3000" spinner="circles" (willDismiss)="outLoading($event)"></ion-loading>
   </ion-content>
   <ion-footer [translucent]="true">
     <ion-toolbar>

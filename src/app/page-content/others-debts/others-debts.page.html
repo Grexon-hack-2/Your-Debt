@@ -8,7 +8,15 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content [fullscreen]="true">
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content
+        pullingIcon="chevron-down-circle-outline"
+        pullingText="Pull to refresh"
+        refreshingSpinner="circles"
+      >
+      </ion-refresher-content>
+    </ion-refresher>
     <ion-searchbar
       #search
       (ionInput)="handlerInput($event)"
@@ -153,6 +161,7 @@
         </div>
       </ng-template>
     </ion-modal>
+    <ion-loading [isOpen]="showLoading" message="Loading..." [duration]="3000" spinner="circles" (willDismiss)="outLoading($event)"></ion-loading>
   </ion-content>
 </div>
 

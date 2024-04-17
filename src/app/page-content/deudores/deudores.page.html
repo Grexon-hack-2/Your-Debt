@@ -9,6 +9,14 @@
   </ion-header>
 
   <ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
     <ion-searchbar #search (ionInput)="handlerInput($event)" placeholder="Nombre del deudor" ></ion-searchbar>
     <table
       class="table table-striped"
@@ -150,6 +158,7 @@
         </ion-content>
       </ng-template>
     </ion-modal>
+    <ion-loading [isOpen]="showLoading" message="Loading..." [duration]="3000" spinner="circles" (willDismiss)="outLoading($event)"></ion-loading>
   </ion-content>
 </div>
 <ng-template #templateLoading>

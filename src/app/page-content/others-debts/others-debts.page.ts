@@ -6,14 +6,14 @@ import { InitialService } from '../initial.service';
 import { OtherDebtsRequest, OtherDebtsResponse, listDebt } from 'src/Models/listDebtsModel';
 import { ToastService } from 'src/Utils/ToastService';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IonModal, IonSearchbar } from "@ionic/angular/standalone";
+import { IonModal, IonSearchbar, IonLoading, IonRefresherContent, IonRefresher } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-others-debts',
   templateUrl: './others-debts.page.html',
   styleUrls: ['./others-debts.page.scss'],
   standalone: true,
-  imports: [...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonRefresher, IonRefresherContent,  IonLoading, ...InterfaceIonic.ArrayInterface, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class OthersDebtsPage {
   public showPage: boolean = false;
@@ -23,6 +23,8 @@ export class OthersDebtsPage {
   public listResultFilter: OtherDebtsResponse[] = [];
   public listNameDebt : string[] = [];
   public listDebts: listDebt[] = [];
+
+  public showLoading: boolean = false;
 
   @ViewChild(IonModal) modal: IonModal;
   @ViewChild(IonSearchbar) search: IonSearchbar;
@@ -72,9 +74,9 @@ export class OthersDebtsPage {
     const { nameDebt, debtorsID, money } = this.formOtherDebt.value;
 
     const dataDebtor = debtorsID as listDebt;
-
+    this.showLoading = true;
     const otherDebt:OtherDebtsRequest = {
-      nameDebt,
+      nameDebt: nameDebt.toLocaleLowerCase().trim(),
       debt: money,
       debtorsID: dataDebtor.debtorsID,
       debtorName: dataDebtor.name
@@ -105,4 +107,14 @@ export class OthersDebtsPage {
     this.search.value = "";
   }
 
+  outLoading(event: Event) {
+    this.showLoading = false;
+  }
+
+  handleRefresh(event) {
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
+  }
 }
