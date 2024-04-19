@@ -36,6 +36,11 @@ constructor(
     return this._http.post<string>(url, data);
   }
 
+  updateRegister(data: RegisterData):Observable<AuthorizationResponse>{
+    const url = "api/Register/UpdateRegister";
+    return this._http.put<string>(url, data).pipe(tap(async (UserInfo: AuthorizationResponse)=> {
+      this.setAuth(UserInfo);
+    }))
+  }
+
 }
-
-

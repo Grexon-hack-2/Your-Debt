@@ -9,10 +9,13 @@ import { environment } from './environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 import { LocalStorageService } from 'ngx-webstorage';
 import { provideServiceWorker } from '@angular/service-worker';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 if (environment.production) {
   enableProdMode();
 }
+
+defineCustomElements(window);
 
 bootstrapApplication(AppComponent, {
   providers: [

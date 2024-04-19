@@ -1,0 +1,91 @@
+<ion-modal id="modal-update" #modal [isOpen]="isOpenUpdate" (willDismiss)="setCloseModal()">
+  <ng-template>
+    <div class="wrapper" style="padding: 10px;">
+      <h3>Actualizar información</h3>
+
+      <form [formGroup]="formUpdate" (ngSubmit)="onSubmit()">
+        <div class="content-img">
+          <ion-avatar>
+            <img [src]="urlImg" alt="imagen de perfil" />
+          </ion-avatar>
+          <ion-button id="click-trigger">Cambiar</ion-button>
+          <ion-popover trigger="click-trigger" triggerAction="click" [dismissOnSelect]="true">
+            <ng-template>
+              <ion-content class="ion-padding">
+                <ion-list lines="none">
+                  <ion-item button (click)="handlerSelectImg('../../../assets/Users/doctora.png')">
+                    <ion-avatar>
+                      <img src="../../../assets/Users/doctora.png" alt="icono doctora">
+                    </ion-avatar>
+                    <ion-label class="ion-text-center">Doctora Mariana</ion-label>
+                  </ion-item>
+                  <ion-item button (click)="handlerSelectImg('../../../assets/Users/doctora2.png')">
+                    <ion-avatar>
+                      <img src="../../../assets/Users/doctora2.png" alt="icono doctora2">
+                    </ion-avatar>
+                    <ion-label class="ion-text-center">Ingeniera Laura</ion-label>
+                  </ion-item>
+                  <ion-item button (click)="handlerSelectImg('../../../assets/Users/student.png')">
+                    <ion-avatar>
+                      <img src="../../../assets/Users/student.png" alt="icono student">
+                    </ion-avatar>
+                    <ion-label class="ion-text-center">Estudiante Miguel</ion-label>
+                  </ion-item>
+                  <ion-item button (click)="handlerSelectImg('../../../assets/Users/teacher.png')">
+                    <ion-avatar>
+                      <img src="../../../assets/Users/teacher.png" alt="icono teacher">
+                    </ion-avatar>
+                    <ion-label class="ion-text-center">Maestra Maria</ion-label>
+                  </ion-item>
+                  <ion-item button (click)="handlerSelectImg('../../../assets/Users/teacher2.png')">
+                    <ion-avatar>
+                      <img src="../../../assets/Users/teacher2.png" alt="icono teacher2">
+                    </ion-avatar>
+                    <ion-label class="ion-text-center">Profesor Rodrigo</ion-label>
+                  </ion-item>
+                  <ion-item button (click)="addNewToGallery()">
+                      <ion-icon style="font-size: 40px;" color="black" name="camera"></ion-icon>
+                    <ion-label class="ion-text-center">Tomar foto</ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-content>
+            </ng-template>
+          </ion-popover>
+        </div>
+        <ion-list lines="full">
+          <!-- nombre personal -->
+          <ion-item>
+            <ion-input labelPlacement="floating" formControlName="nameUser">
+              <div slot="label">Nombre <ion-text color="danger">*</ion-text></div>
+            </ion-input>
+          </ion-item>
+          <div *ngIf="formUpdate.get('nameUser').invalid && formUpdate.get('nameUser').touched" class="container-error">
+            <ion-text color="danger" class="form-error">
+              Por favor ingresa tu nombre personal.
+            </ion-text>
+          </div>
+          <!-- Email y verificación -->
+          <ion-item>
+            <ion-input labelPlacement="floating" formControlName="email">
+              <div slot="label">Email <ion-text color="danger">*</ion-text></div>
+            </ion-input>
+          </ion-item>
+          <div *ngIf="formUpdate.get('email').invalid && formUpdate.get('email').touched" class="container-error">
+            <ion-text *ngIf="formUpdate.get('email').hasError('required')" color="danger" class="form-error">
+              El Email es requerido.
+            </ion-text>
+            <ion-text *ngIf="formUpdate.get('email').hasError('pattern')" color="danger" class="form-error">
+              Agrege un email valido.
+            </ion-text>
+          </div>
+        </ion-list>
+        <ion-buttons slot="start">
+          <ion-button fill="outline" color="success" type="submit" [disabled]="formUpdate.invalid">
+            Enviar
+          </ion-button>
+        </ion-buttons>
+      </form>
+    </div>
+  </ng-template>
+</ion-modal>
+<ion-loading [isOpen]="showLoading" message="Loading..." [duration]="3000" spinner="circles" (willDismiss)="outLoading()"></ion-loading>

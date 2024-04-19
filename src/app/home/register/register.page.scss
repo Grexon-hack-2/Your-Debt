@@ -5,3 +5,8 @@
 .content-img-register img{
     filter: drop-shadow(0 0 5px);
 }
+.content-picture {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+}

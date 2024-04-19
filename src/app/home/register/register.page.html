@@ -9,6 +9,54 @@
   
   <ion-content class="ion-padding">
     <div class="content-form-register">
+      <div class="content-picture">
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" [src]="urlImg" />
+        </ion-avatar>
+        <ion-button id="click-trigger">Agregar +</ion-button>
+        <ion-popover trigger="click-trigger" triggerAction="click" [dismissOnSelect]="true">
+          <ng-template>
+            <ion-content class="ion-padding">
+              <ion-list lines="none">
+                <ion-item button (click)="handlerSelectImg('../../../assets/Users/doctora.png')">
+                  <ion-avatar>
+                    <img src="../../../assets/Users/doctora.png" alt="icono doctora">
+                  </ion-avatar>
+                  <ion-label class="ion-text-center">Doctora Mariana</ion-label>
+                </ion-item>
+                <ion-item button (click)="handlerSelectImg('../../../assets/Users/doctora2.png')">
+                  <ion-avatar>
+                    <img src="../../../assets/Users/doctora2.png" alt="icono doctora2">
+                  </ion-avatar>
+                  <ion-label class="ion-text-center">Ingeniera Laura</ion-label>
+                </ion-item>
+                <ion-item button (click)="handlerSelectImg('../../../assets/Users/student.png')">
+                  <ion-avatar>
+                    <img src="../../../assets/Users/student.png" alt="icono student">
+                  </ion-avatar>
+                  <ion-label class="ion-text-center">Estudiante Miguel</ion-label>
+                </ion-item>
+                <ion-item button (click)="handlerSelectImg('../../../assets/Users/teacher.png')">
+                  <ion-avatar>
+                    <img src="../../../assets/Users/teacher.png" alt="icono teacher">
+                  </ion-avatar>
+                  <ion-label class="ion-text-center">Maestra Maria</ion-label>
+                </ion-item>
+                <ion-item button (click)="handlerSelectImg('../../../assets/Users/teacher2.png')">
+                  <ion-avatar>
+                    <img src="../../../assets/Users/teacher2.png" alt="icono teacher2">
+                  </ion-avatar>
+                  <ion-label class="ion-text-center">Profesor Rodrigo</ion-label>
+                </ion-item>
+                <ion-item button (click)="addNewToGallery()">
+                    <ion-icon style="font-size: 40px;" color="black" name="camera"></ion-icon>
+                  <ion-label class="ion-text-center">Tomar foto</ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
+      </div>
       <form (ngSubmit)="onSubmit()" [formGroup]="formRegister">
         <ion-list>
   
