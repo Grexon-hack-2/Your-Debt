@@ -1,0 +1,20 @@
+ion-modal#modal-update {
+    --width: fit-content;
+    --min-width: 300px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    --padding: 10px
+}
+
+.content-img {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.wrapper form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

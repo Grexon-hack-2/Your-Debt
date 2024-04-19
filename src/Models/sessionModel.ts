@@ -9,6 +9,7 @@ export interface UserData {
     NameUser: string
     Email: string
     PersonName: string
+    Image: string
 }
 
 export interface Ijwt {
@@ -23,4 +24,5 @@ export interface RegisterData {
     name: string
     password: string
     email: string
+    image: string
 }

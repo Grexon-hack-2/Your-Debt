@@ -7,12 +7,16 @@
     <ion-avatar slot="end" (click)="presentPopover($event)">
       <img
         alt="Silhouette of a person's head"
-        src="https://ionicframework.com/docs/img/demos/avatar.svg"
+        [src]="urlImg!"
       />
     </ion-avatar>
     <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false">
       <ng-template>
         <ion-content class="ion-padding">
+          <ion-item (click)="openModalUpdateInfo()">
+            <ion-icon [style.color]="!iconMode ? 'black' : 'white'" slot="start" size="small" name="server"></ion-icon>
+            <ion-label>Actualizar</ion-label>
+          </ion-item>
           <ion-item (click)="sessionOut()">
             <ion-icon [style.color]="!iconMode ? 'black' : 'white'" slot="start" size="small" name="lock-closed"></ion-icon>
             <ion-label>Cerrar sesión</ion-label>
@@ -139,4 +143,5 @@
 
     </div>
   </div>
+  <app-updateInfo [isOpen]="openModalUpdate" (closeModal)="closeModalUpdate($event)" (refreshPage)="refreshPage($event)"></app-updateInfo>
 </ion-content>

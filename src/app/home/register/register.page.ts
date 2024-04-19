@@ -15,13 +15,15 @@ import { SessionService } from '../Session.service';
 import { ToastService } from 'src/Utils/ToastService';
 import { HttpErrorResponse } from '@angular/common/http';
 import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
+import { IonImg } from "@ionic/angular/standalone";
+import { PictureService, UserPhoto } from 'src/Utils/Picture.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonImg, 
     ...InterfaceIonic.ArrayInterface,
     CommonModule,
     FormsModule,
@@ -30,11 +32,15 @@ import { InterfaceIonic } from 'src/Utils/ExpInterfaceIonic';
 })
 export class RegisterPage {
   public formRegister: FormGroup;
+  public urlImg: string = "https://ionicframework.com/docs/img/demos/avatar.svg";
+  private savedImageFile: UserPhoto;
+
   constructor(
     private _formBuild: FormBuilder,
     private _service$: SessionService,
     private _toast: ToastService,
-    private router$: Router
+    private router$: Router,
+    private _pictureService: PictureService
   ) {
     this.formRegister = this._formBuild.group({
       Name: new FormControl('', Validators.required),
@@ -62,11 +68,13 @@ export class RegisterPage {
       return;
     }
     const { UserName, Name, Email, Password } = this.formRegister.value;
+    
     const dataRegister: RegisterData = {
       user: UserName,
       name: Name,
       email: Email,
       password: Password,
+      image: JSON.stringify(this.savedImageFile ?? this.urlImg),
     };
 
     this._service$.registerUser(dataRegister).subscribe(
@@ -89,4 +97,17 @@ export class RegisterPage {
       this.formRegister.get('Password_confirm').setErrors(null);
     }
   }
+
+  handlerSelectImg(url: string){
+    this.urlImg = url;
+  }
+
+  public async addNewToGallery() {
+    // Take a photo
+    const { url, saveFile } = await this._pictureService.addNewToGallery();
+
+    this.urlImg = url;
+    this.savedImageFile = saveFile;
+  }
+
 }

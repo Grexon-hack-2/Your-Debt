@@ -26,6 +26,9 @@ import { InterfaceIonic } from '../../../Utils/ExpInterfaceIonic';
 import { IonPopover, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 import { PersistenceService } from 'src/Utils/Persistence.service';
 import { RouterLink } from '@angular/router';
+import { Platform } from '@ionic/angular';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { UpdateInfoPage } from "../../../Modals/updateInfo/updateInfo.page";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -44,17 +47,16 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-initial-app',
-  templateUrl: './initial-app.page.html',
-  styleUrls: ['./initial-app.page.scss'],
-  standalone: true,
-  imports: [IonRefresherContent, IonRefresher, 
-    ...InterfaceIonic.ArrayInterface,
-    CommonModule,
-    FormsModule,
-    NgApexchartsModule,
-    RouterLink
-  ],
+    selector: 'app-initial-app',
+    templateUrl: './initial-app.page.html',
+    styleUrls: ['./initial-app.page.scss'],
+    standalone: true,
+    imports: [IonRefresherContent, IonRefresher,
+        ...InterfaceIonic.ArrayInterface,
+        CommonModule,
+        FormsModule,
+        NgApexchartsModule,
+        RouterLink, UpdateInfoPage]
 })
 export class InitialAppPage implements OnInit {
   @ViewChild('chart') chart: ChartComponent;
@@ -73,17 +75,37 @@ export class InitialAppPage implements OnInit {
   public productData: Product;
   private readonly keyThemeColor: string = "color-Theme";
   public iconMode: boolean = false;
+  public urlImg:string="";
+  private platform: Platform;
+
+  public openModalUpdate: boolean = false;
 
   constructor(
     private session$: SessionService,
     private _auth: AuthService,
     private service$: InitialService,
-    private _persistence: PersistenceService
-  ) {}
+    private _persistence: PersistenceService,
+    platform: Platform
+  ) {this.platform = platform;}
 
   ngOnInit() {
     this._auth.getDataUser.subscribe(
-      (resp: UserData) => (this.nameUser = resp.PersonName)
+      async (resp: UserData) => {
+
+        this.nameUser = resp.PersonName;
+        let img = resp.Image !== null ? JSON.parse(resp.Image) : "https://ionicframework.com/docs/img/demos/avatar.svg";
+        if(!this.platform.is('hybrid') && typeof img !== "string") {
+          const readfile = await Filesystem.readFile({
+            path: img?.filepath,
+            directory: Directory.Data
+          });
+
+          img.webviewPath = `data:image/jpeg;base64,${readfile.data}`
+        }
+
+        this.urlImg = img.webviewPath ?? img;
+       
+      }
     );
 
     let colorThemeInitial = this._persistence.get(this.keyThemeColor);
@@ -242,5 +264,17 @@ export class InitialAppPage implements OnInit {
       this.ionViewWillEnter();
       event.target.complete();
     }, 2000);
+  }
+
+  openModalUpdateInfo(){
+    this.openModalUpdate = true;
+  }
+
+  closeModalUpdate(event){
+    this.openModalUpdate = false;
+  }
+
+  refreshPage(event) {
+    this.ngOnInit();
   }
 }

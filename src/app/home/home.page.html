@@ -38,12 +38,19 @@
           <div class="content-input">
             <ion-label position="stacked">Password</ion-label>
             <ion-input
+              #password
+              (ngModelChange)="onChange()"
               required
               ngDefaultControl
               formControlName="password"
               type="password"
               placeholder="Enter the password"
-            ></ion-input>
+            >
+            <ion-button *ngIf="showIconEye" fill="clear" slot="end" aria-label="Show/hide" (click)="showInputText($event)">
+              <ion-icon *ngIf="!showText" name="eye-outline" aria-hidden="true"></ion-icon>
+              <ion-icon *ngIf="showText" name="eye-off-outline" aria-hidden="true"></ion-icon>
+            </ion-button>
+            </ion-input>
             <hr>
             <div
               *ngIf="formUser.get('password').invalid && formUser.get('password').touched"
