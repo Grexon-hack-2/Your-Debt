@@ -85,7 +85,8 @@ export class UpdateInfoPage {
   }
 
   setCloseModal(){
-    this.closeModal.emit(false)
+    this.closeModal.emit(false);
+    this.formUpdate.patchValue({nameUser:this.nameUser, email:this.email});
   }
 
   handlerSelectImg(url: string){
