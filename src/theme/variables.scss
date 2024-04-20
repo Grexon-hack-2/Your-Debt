@@ -76,7 +76,6 @@
   --ion-color-light-tint: #f5f6f9;
 }
 
-@media (prefers-color-scheme: dark) {
   /*
    * Dark Colors
    * -------------------------------------------
@@ -354,7 +353,7 @@
 
   }
 
-  .sc-ion-alert-ios-h{
+  body.dark .sc-ion-alert-ios-h{
     --background : #636161 !important;
     font-weight: 500;
   }
@@ -400,7 +399,6 @@
 
     --ion-card-background: #1e1e1e;
   }
-}
 
 html {
   /* 
