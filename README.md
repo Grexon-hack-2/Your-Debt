@@ -2,6 +2,8 @@
 
 Your-Debt es una aplicación diseñada para ayudarte a llevar un registro detallado de tus deudas pendientes y de los productos que tienes en venta. Con esta herramienta, podrás administrar tus finanzas de manera eficiente y tener un control completo sobre tus transacciones y deudas.
 
+![image](https://github.com/Grexon-hack-2/Your-Debt/assets/142139597/895bbba5-a792-4b2d-a2ef-90130c1d5aea)
+
 ## Características
 
 ### Gestión de productos
@@ -27,6 +29,12 @@ Your-Debt es una aplicación diseñada para ayudarte a llevar un registro detall
 3. Agrega nuevos productos o deudores según sea necesario.
 4. Registra las ventas de productos y los abonos realizados por los deudores.
 5. Visualiza los informes y gráficos para analizar tu situación financiera.
+
+  ![image](https://github.com/Grexon-hack-2/Your-Debt/assets/142139597/b97a380f-60d5-493b-bd24-55189b512655)
+  ![image](https://github.com/Grexon-hack-2/Your-Debt/assets/142139597/095b2d49-9fce-4e39-a63b-952def5297a9)
+  ![image](https://github.com/Grexon-hack-2/Your-Debt/assets/142139597/8ca48938-81ad-4102-b13c-781421d40b5e)
+  ![image](https://github.com/Grexon-hack-2/Your-Debt/assets/142139597/8f25265f-31fd-45a1-9202-1e9a6dcb6b45)
+
 
 ## Contribución
 
