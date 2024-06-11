@@ -35,7 +35,7 @@
           [routerLink]="['/inicio/deudores/detalle', item.debtorsID]"
           routerLinkActive="router-link-active"
         >
-          <td>{{item.name}}</td>
+          <td>{{item.name.toLocaleLowerCase() | titlecase}}</td>
           <td>${{item.debt}}</td>
         </tr>
         }

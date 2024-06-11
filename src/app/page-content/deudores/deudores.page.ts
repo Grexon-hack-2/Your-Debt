@@ -201,6 +201,7 @@ export class DeudoresPage  {
   };
 
   handlerInput(event):void{
+    this.currentPage = 1;
     const query = event.target.value.toLowerCase();
     this.listResultFilter = this.listDebts.filter((item) => item.name.toLocaleLowerCase().indexOf(query) > -1);
   }
